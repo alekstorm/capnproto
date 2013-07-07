@@ -35,6 +35,8 @@ import spire.syntax.radix._
 
 import bitsy._; import Quantity.implicits._
 
+// TODO link to github source from scaladoc
+
 // TODO put these all in a private[capnproto] package object or something
 sealed trait Pointer {
   def offset: Words

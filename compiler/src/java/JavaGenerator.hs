@@ -41,7 +41,7 @@ import Data.List(stripPrefix)
 import qualified Data.Map as Map
 import Data.Maybe(catMaybes, fromMaybe, isJust)
 import qualified Data.Set as Set
-import Data.Word(Word8)
+import Data.Word(Word8, Word64)
 import Prelude hiding (readFile)
 import Text.Hastache
 import Text.Hastache.Context
@@ -134,13 +134,11 @@ javaTypeString (StructType desc) = "capnproto.StructGateway<" ++ foo ++ ".Reader
     foo = globalName $ DescStruct desc
 javaTypeString (ListType desc) = "capnproto.ListGateway<" ++ (javaTypeString desc) ++ ">"
 
-javaTypeString (BuiltinType BuiltinObject) = " ::capnproto::Object" -- FIXME; luckily, not in test.capnp yet
 javaTypeString (InlineStructType desc) = globalName $ DescStruct desc
 javaTypeString (InterfaceType desc) = globalName $ DescInterface desc
-javaTypeString (InlineListType t s) =
-    concat [" ::capnproto::InlineList<", javaTypeString t, ", ", show s, ">"]
-javaTypeString (InlineDataType s) =
-    concat [" ::capnproto::InlineData<", show s, ">"]
+javaTypeString (BuiltinType BuiltinObject) = _|_ -- FIXME; luckily, not in test.capnp yet
+javaTypeString (InlineListType t s) = _|_
+javaTypeString (InlineDataType s) = _|_
 
 javaGenericTypeString (BuiltinType BuiltinBool) = "Boolean"
 javaGenericTypeString (BuiltinType BuiltinInt8) = "Byte"
@@ -313,7 +311,7 @@ fieldContext parent desc = mkStrContext context where
     context "fieldSize" = MuVariable $ case fieldSize typ of
         SizeVoid -> 0
         SizeData size -> 64 `quot` (dataSizeInBits size)
-        SizeReference -> 8
+        SizePointer -> 8
     context s = named parent "fieldName" (fieldName desc) s
     typ = fieldType desc
 
@@ -377,8 +375,6 @@ templates = Map.fromList $(embedDir "src/java")
 srcTemplateFile = "java" ++ templateExt
 srcTemplate = ByteStringUTF8.toString $ Map.findWithDefault (error $ "Source template not found: " ++ srcTemplateFile) srcTemplateFile templates
 
--- Sadly it appears that hastache requires access to the IO monad, even when template inclusion
--- is disabled.
 hastacheConfig :: MuConfig IO
 hastacheConfig = MuConfig
     { muEscapeFunc = emptyEscape
@@ -387,8 +383,10 @@ hastacheConfig = MuConfig
     , muTemplateRead = \file -> return $ maybe (error $ "Template not found: " ++ file) Just $ Map.lookup file templates
     }
 
-generateJava :: [FileDesc] -> [FileDesc] -> IO [(FilePath, LZ.ByteString)] -- TODO return Map
-generateJava files _ = do
+-- TODO return Map
+-- TODO use schemaNodes
+generateJava :: [FileDesc] -> [Word8] -> Map.Map Word64 [Word8] -> IO [(FilePath, LZ.ByteString)]
+generateJava files _ _ = do
     outputs <- bar $ map foo $ concat $ map fileContexts files
     return $ map (\(name, output) -> (name ++ ".java", output)) outputs where
         bar (x:xs) = do
@@ -399,11 +397,3 @@ generateJava files _ = do
         foo (name, contents) = do
             output <- hastacheStr hastacheConfig (encodeStr srcTemplate) contents
             return (name, output)
-
-{-
-    let handleFile file = do
-            source <- generateCxxSource file
-            return [(fileName file ++ ".c++", source)]
-    results <- mapM handleFile files
-    return $ concat results
--}

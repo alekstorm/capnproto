@@ -9,6 +9,8 @@
 
   <properties>
     <junit.version>4.11</junit.version>
+    <github.username>alekstorm</github.username>
+    <github.repo>capnproto</github.repo>
     <org.scala-lang.version>2.10.2</org.scala-lang.version>
     <scala-maven-plugin.version>3.1.5</scala-maven-plugin.version>
   </properties>
@@ -105,8 +107,33 @@
     </dependency>
   </dependencies>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>sonatype-releases</id>
+      <url>http://oss.sonatype.org/content/repositories/releases</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>clojars.org</id>
+      <url>http://clojars.org/repo</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <build>
     <plugins>
+      <!-- for scaladoc source URLs -->
+            <plugin>
+                <groupId>com.github.koraktor</groupId>
+                <artifactId>mavanagaiata</artifactId>
+                <executions>
+                    <execution>
+                        <id>load-git-branch</id>
+                        <goals>
+                            <goal>commit</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -126,33 +153,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-
-      <!-- for scaladoc generation -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <reportPlugins>
-            <!-- FIXME what is this?
-            <plugin>
-              <artifactId>maven-project-info-reports-plugin</artifactId>
-              <version>2.2</version>
-            </plugin>-->
-            <plugin>
-              <groupId>net.alchim31.maven</groupId>
-              <artifactId>scala-maven-plugin</artifactId>
-              <version>${scala-maven-plugin.version}</version>
-              <configuration>
-                <jvmArgs>
-                  <jvmArg>-Xms64m</jvmArg>
-                  <jvmArg>-Xmx1024m</jvmArg>
-                </jvmArgs>
-              </configuration>
-            </plugin>
-          </reportPlugins>
-        </configuration>
       </plugin>
 
       <!--
@@ -201,9 +201,15 @@
           <args>
             <!-- TODO maybe support version without standard libs (-Yno-predef), for low-memory systems like Android -->
             <arg>-deprecation</arg>
+            <arg>-doc-source-url</arg>
+            <!-- TODO link to specific file revision -->
+            <arg>https://github.com/${github.username}/${github.repo}/master€{FILE_PATH}.scala</arg>
             <arg>-feature</arg>
             <arg>-language:_</arg>
             <arg>-optimize</arg>
+            <!-- required for the FILE_PATH variable in -doc-source-url to be relative -->
+            <arg>-sourcepath</arg>
+            <arg>${project.basedir}</arg>
             <arg>-unchecked</arg>
             <arg>-Xfatal-warnings</arg>
             <!-- TODO allow these to be disabled, or provide separate jars (with different classifiers) -->
