@@ -1,0 +1,273 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.capnproto</groupId>
+  <artifactId>capnproto_2.10</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <name>Cap'n Proto Scala</name>
+
+  <properties>
+    <junit.version>4.11</junit.version>
+    <org.scala-lang.version>2.10.2</org.scala-lang.version>
+    <scala-maven-plugin.version>3.1.5</scala-maven-plugin.version>
+  </properties>
+
+  <dependencies>
+    <!-- Runtime dependencies -->
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${org.scala-lang.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${org.scala-lang.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.chuusai</groupId>
+      <artifactId>shapeless_2.10.0</artifactId>
+      <version>1.2.4</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.spire-math</groupId>
+      <artifactId>spire_2.10</artifactId>
+      <version>0.4.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-reflect</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- Testing dependencies -->
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.liftweb</groupId>
+      <artifactId>lift-util_2.10</artifactId>
+      <version>2.5.1</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-compiler</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_2.10</artifactId>
+      <version>2.0.M6-SNAP26</version> <!-- Snapshots are okay for testing dependencies -->
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-compiler</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.3</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <dependencyConvergence />
+                <requireJavaVersion>
+                  <version>[1.5,)</version>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- for scaladoc generation -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <reportPlugins>
+            <!-- FIXME what is this?
+            <plugin>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+              <version>2.2</version>
+            </plugin>-->
+            <plugin>
+              <groupId>net.alchim31.maven</groupId>
+              <artifactId>scala-maven-plugin</artifactId>
+              <version>${scala-maven-plugin.version}</version>
+              <configuration>
+                <jvmArgs>
+                  <jvmArg>-Xms64m</jvmArg>
+                  <jvmArg>-Xmx1024m</jvmArg>
+                </jvmArgs>
+              </configuration>
+            </plugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
+
+      <!--
+      // FIXME Despite having ~/.cabal/bin in my PATH, this complains that it can't find capnpc (`which capnpc` also
+      // mysteriously reports no results, yet executing it manually works). Would appreciate others testing and
+      // reporting whether this is a quirk unique to my configuration.
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>capnpc</executable>
+          <arguments>
+            <argument>-I</argument>
+            <argument>src/main/resources/capnp</argument>
+            <argument>-o</argument>
+            <argument>java:src/test/java</argument> // TODO put in /generated subdirectory
+            <argument>src/test/resources/test.capnp</argument>
+          </arguments>
+        </configuration>
+      </plugin> -->
+
+      <!-- compile Scala sources -->
+      <!-- TODO different artifacts for different target JDKs (named with -jdk15, etc), use Animal Sniffer to ensure correct bootclasspath -->
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>${scala-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <args>
+            <!-- TODO maybe support version without standard libs (-Yno-predef), for low-memory systems like Android -->
+            <arg>-deprecation</arg>
+            <arg>-feature</arg>
+            <arg>-language:_</arg>
+            <arg>-optimize</arg>
+            <arg>-unchecked</arg>
+            <arg>-Xfatal-warnings</arg>
+            <!-- TODO allow these to be disabled, or provide separate jars (with different classifiers) -->
+            <arg>-Yclosure-elim</arg>
+            <arg>-Ydead-code</arg>
+            <arg>-Yinline</arg>
+            <arg>-Yinline-handlers</arg>
+            <arg>-Yinline-warnings</arg>
+            <arg>-Ywarn-all</arg>
+          </args>
+          <!-- <recompileMode>incremental</recompileMode>
+          <useZincServer>true</useZincServer> -->
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <compilerArgs>
+            <!-- <arg>-Xlint</arg> // too noisy for now -->
+          </compilerArgs>
+        </configuration>
+      </plugin>
+
+      <!--<plugin>
+        <groupId>org.scalastyle</groupId>
+        <artifactId>scalastyle-maven-plugin</artifactId>
+        <version>0.3.2</version>
+        <configuration>
+          <verbose>false</verbose>
+          <failOnViolation>true</failOnViolation>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <failOnWarning>false</failOnWarning>
+          <configLocation>${basedir}/lib/scalastyle_config.xml</configLocation>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>-->
+
+      <!-- silences a warning -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

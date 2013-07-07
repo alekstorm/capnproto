@@ -1,0 +1,172 @@
+{
+  "tests": [
+    {
+      "name": "Typical values in TestAllTypes",
+      "direction": "json2Capnp",
+      "id": "20a8f314b80b63fd",
+      "expected": "AAAAABsAAAAAAAAABgAUAIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+      "fields": {
+        "voidField": null,
+        "boolField": true,
+        "int8Field": "-126",
+        "int16Field": "-32766",
+        "int32Field": "-2147483646",
+        "int64Field": "-9223372036854775806",
+        "uInt8Field": "254",
+        "uInt16Field": "65534",
+        "uInt32Field": "4294967294",
+        "uInt64Field": "18446744073709551614",
+        "float32Field": 3.3e38,
+        "float64Field": 1.7e308,
+        "textField": "föō",
+        "dataField": "YQBI",
+        "structField": {
+          "int8Field": "96",
+          "textField": "Guatemala"
+        },
+        "enumField": "3",
+        "voidList": {
+          "size": "4",
+          "values": {
+            "0": null,
+            "2": null
+          }
+        },
+        "boolList": {
+          "size": "4",
+          "values": {
+            "0": true,
+            "2": false
+          }
+        },
+        "int8List": {
+          "size": "4",
+          "values": {
+            "0": "-125",
+            "2": "-126"
+          }
+        },
+        "int16List": {
+          "size": "4",
+          "values": {
+            "0": "-32765",
+            "2": "-32766"
+          }
+        },
+        "int32List": {
+          "size": "4",
+          "values": {
+            "0": "-2147483645",
+            "2": "-2147483646"
+          }
+        },
+        "int64List": {
+          "size": "4",
+          "values": {
+            "0": "-9223372036854775805",
+            "2": "-9223372036854775806"
+          }
+        },
+        "uInt8List": {
+          "size": "4",
+          "values": {
+            "0": "253",
+            "2": "254"
+          }
+        },
+        "uInt16List": {
+          "size": "4",
+          "values": {
+            "0": "65533",
+            "2": "65534"
+          }
+        },
+        "uInt32List": {
+          "size": "4",
+          "values": {
+            "0": "4294967293",
+            "2": "4294967294"
+          }
+        },
+        "uInt64List": {
+          "size": "4",
+          "values": {
+            "0": "18446744073709551613",
+            "2": "18446744073709551614"
+          }
+        },
+        "float32List": {
+          "size": "4",
+          "values": {
+            "0": -3.2e38,
+            "2": 3.3e38
+          }
+        },
+        "float64List": {
+          "size": "4",
+          "values": {
+            "0": -1.6e308,
+            "2": 1.7e308
+          }
+        },
+        "textList": {
+          "size": "4",
+          "values": {
+            "0": "bაr",
+            "2": "föō"
+          }
+        },
+        "dataList": {
+          "size": "4",
+          "values": {
+            "0": "YQBH",
+            "2": "YQBI"
+          }
+        },
+        "structList": {
+          "size": "1",
+          "values": {
+            "0": {
+              "int8Field": "15",
+              "textField": "Portugal"
+            }
+          }
+        },
+        "enumList": {
+          "size": "4",
+          "values": {
+            "0": "2",
+            "2": "3"
+          }
+        }
+      }
+    },
+    {
+      "name": "TestDefaults unset",
+      "description": "",
+      "direction": "",
+      "id": "FIXME",
+      "fields": {
+
+      }
+    },
+    {
+      "name": "TestDefaults set to same as TestAllTypes",
+      "description": "",
+      "direction": "",
+      "id": "FIXME",
+      "fields": {
+
+      }
+    },
+    {
+      "name": "TestUnion - try a bunch of different combinations",
+      "description": "",
+      "direction": "",
+      "id": "FIXME",
+      "fields": {
+
+      }
+    }
+  ]
+}

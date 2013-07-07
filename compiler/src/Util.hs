@@ -23,7 +23,7 @@
 
 module Util where
 
-import Data.Char (isUpper, toUpper)
+import Data.Char (isUpper, toLower, toUpper)
 import Data.List (intercalate, isPrefixOf)
 import Data.Bits(shiftR, Bits)
 import Data.Word(Word8)
@@ -45,6 +45,9 @@ splitName (a:rest) = case splitName rest of
     firstWord:moreWords -> (a:firstWord):moreWords
     [] -> [[a]]
 splitName [] = []
+
+toLowerCase :: String -> String
+toLowerCase name = map toLower name
 
 toTitleCase :: String -> String
 toTitleCase (a:rest) = toUpper a:rest

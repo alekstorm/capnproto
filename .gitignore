@@ -17,6 +17,8 @@
 /c++/src/protobuf
 /c++/src/snappy
 
+/c++/src/capnproto/test.capnp.*
+
 # Ekam build artifacts.
 /c++/tmp/
 /c++/bin/
@@ -35,3 +37,5 @@
 
 # cabal-install artifacts
 /compiler/dist/
+
+/scala/target/

@@ -34,7 +34,7 @@ extra-source-files:
                    src/c++-header.mustache
 
 executable capnpc
-  hs-source-dirs:  src
+  hs-source-dirs:  src, src/java
   main-is:         Main.hs
   build-depends:
                    base >= 4,
@@ -53,7 +53,8 @@ executable capnpc
                    syb,
                    transformers,
                    entropy,
-                   process
+                   process,
+                   binary
   ghc-options:     -Wall -fno-warn-missing-signatures
   other-modules:
                    Lexer,
@@ -64,4 +65,5 @@ executable capnpc
                    Semantics,
                    Util,
                    CxxGenerator,
+                   JavaGenerator,
                    WireFormat

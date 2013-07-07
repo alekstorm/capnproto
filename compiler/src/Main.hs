@@ -52,13 +52,14 @@ import Data.Function(on)
 import Semantics
 import WireFormat(encodeSchema)
 import CxxGenerator(generateCxx)
+import JavaGenerator(generateJava)
 import Paths_capnproto_compiler
 import Data.Version(showVersion)
 
 type GeneratorFn = [FileDesc] -> [Word8] -> Map.Map Word64 [Word8] -> IO [(FilePath, LZ.ByteString)]
 
 generatorFns :: Map.Map String GeneratorFn
-generatorFns = Map.fromList [ ("c++", generateCxx) ]
+generatorFns = Map.fromList [ ("c++", generateCxx), ("java", generateJava) ]
 
 data Opt = SearchPathOpt FilePath
          | OutputOpt String GeneratorFn FilePath
