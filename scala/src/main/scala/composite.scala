@@ -28,6 +28,16 @@ import spire.math.UInt
 import spire.syntax.literals
 
 import bitsy._; import Quantity.implicits._
+import internal._
+
+trait Gateway[C <: Composite[C, _], P <: NearPointerTarget] {
+  private[capnproto] def context: BaseContext[P]
+
+  /** A `Reader` over the value. If the value is unallocated, this will represent the default value. Calling any
+    * allocation method will invalidate pre-existing `Reader`s.
+    */
+  def reader: C
+}
 
 // TODO make default lazy
 // TODO ReaderGateway, BuilderGateway, so that a Reader composite can't modify one of its fields through a Gateway
@@ -48,14 +58,7 @@ import bitsy._; import Quantity.implicits._
   * @tparam MC Composite `Builder` class
   * @tparam P Encoded pointer format
   */
-trait Gateway[C <: Composite[C, MC], MC <: C with Modifiable[C], P <: NearPointerTarget] {
-  private[capnproto] def context: BaseContext[P]
-
-  /** A `Reader` over the value. If the value is unallocated, this will represent the default value. Calling any
-    * allocation method will invalidate pre-existing `Reader`s.
-    */
-  def reader: C
-
+trait ModifiableGateway[C <: Composite[C, MC], MC <: C, P <: NearPointerTarget] extends Gateway[C, P] {
   /** A `Builder` over the value, wrapped in an `Option`. If the value is unallocated, this will be `None`. Calling any
     * allocation method will invalidate pre-existing `Reader`s.
     */
@@ -86,7 +89,9 @@ trait Gateway[C <: Composite[C, MC], MC <: C with Modifiable[C], P <: NearPointe
   }
 }
 
-abstract class CollectionGateway[C <: Collection[C, MC], MC <: C with Modifiable[C]](override val context: BaseContext[ListPointerTarget], default: Option[Array[Byte]]) extends Gateway[C, MC, ListPointerTarget] {
+trait CollectionGateway[C <: Collection[C, _]] extends Gateway[C, ListPointerTarget]
+
+trait ModifiableCollectionGateway[C <: Collection[C, MC], MC <: C] extends ModifiableGateway[C, MC, ListPointerTarget] {
   /** Allocate and clear at least enough memory to hold `size` elements.
     * @return An empty `Builder` over the allocated collection.
     */
@@ -97,18 +102,13 @@ abstract class CollectionGateway[C <: Collection[C, MC], MC <: C with Modifiable
   def resize(newSize: UInt): MC
 }
 
-// FIXME doesn't make sense to both be a Reader and have a method that returns one
-trait Modifiable[C] { this: C =>
-  def reader: C = this
-}
-
-trait Composite[C <: Composite[C, MC], MC <: C /*with Modifiable[C]*/] {
+trait Composite[C <: Composite[C, MC], MC <: C] {
   // TODO suffix struct fields with these names with $
   private[capnproto] val context: BaseContext[P]
   type P <: NearPointerTarget // TODO why isn't this a type parameter?
 }
 
-trait Collection[R <: Collection[R, MR], MR <: R with Modifiable[R]] extends Composite[R, MR] { type P = ListPointerTarget }
+trait Collection[R <: Collection[R, MR], MR <: R] extends Composite[R, MR] { type P = ListPointerTarget }
 
 abstract case class Union[T, F <: Enum[F]](which: F, value: T)
 abstract case class Annotation[T](value: T) // TODO forgot what this is for

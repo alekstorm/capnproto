@@ -195,7 +195,7 @@ capnp_test_SOURCES =                                           \
   src/capnp/blob-test.c++                                      \
   src/capnp/endian-test.c++                                    \
   src/capnp/endian-fallback-test.c++                           \
-  src/capnp/endian-reverse-test.c++                            \
+  #src/capnp/endian-reverse-test.c++                            \
   src/capnp/layout-test.c++                                    \
   src/capnp/message-test.c++                                   \
   src/capnp/schema-test.c++                                    \

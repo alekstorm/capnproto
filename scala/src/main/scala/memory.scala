@@ -37,6 +37,7 @@ import spire.math.UInt
 import spire.syntax.literals
 
 import bitsy._; import Quantity.implicits._
+import internal._
 
 trait Allocator {
   def getArena(size: Words): Arena // returns exact size

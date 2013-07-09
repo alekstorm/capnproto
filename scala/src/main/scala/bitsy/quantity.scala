@@ -23,11 +23,11 @@
 
 package capnproto.bitsy
 
-import java.lang.{Integer => JInt, Long => JLong, Short => JShort}
+import java.lang.{Long => JLong, Short => JShort}
 
-import scala.math.{ScalaNumericAnyConversions, ceil}
+import scala.math.ScalaNumericAnyConversions
 
-import spire.math.{UByte, UShort, UInt, ULong}
+import spire.math.{UShort, UInt, ULong}
 import spire.syntax._
 
 import shapeless._; import Nat._
@@ -36,8 +36,56 @@ import shapeless._; import Nat._
 // TODO caliper for benchmarking
 // TODO override equals and hashCode, check contracts
 // TODO integrate with spire
+// TODO consider way to parametrize Quantity on other Quantity (or on phantom newtype) to represent an "offset"
 // TODO capnpc options for reading/writing to/from stdin/stdout, or custom file names
 // TODO consider implicitly converting from larger to smaller widths (and vice versa?) - still not from Int to Quantity, obviously - maybe Quantity to Int?
+// TODO linkify toQuantity, etc references in doc comments
+/** Int-based value class representing a quantity of bytes or some multiple thereof.
+  *
+  * Handy factory objects and Int enrichments are provided for the first four orders: [[Bytes]] (1 byte), [[Shorts]]
+  * (2 bytes), [[Quads]] (4 bytes), and [[Words]] (8 bytes). See [[Quantity.implicits.QuantityRichInt QuantityRichInt]].
+  *
+  * A Quantity can be converted to a different order with toQuantity (or the convenience methods toBytes,
+  * toShorts, toQuads, and toWords), but if the new order is wider, a fractional result will be rounded up. Intuitively,
+  * this is so that the wider quantity will "cover" the amount of memory represented by the thinner one.
+  *
+  * {{{
+  * > val foo = 12 bytes
+  * Bytes(12)
+  * > foo.toWords
+  * Words(2)
+  * > foo.toWords.toBytes
+  * Bytes(16)
+  * }}}
+  *
+  * Arithmetic operations and comparisons involving a Quantity and a bare Int will interpret the Int as being a Quantity
+  * of the same order.
+  *
+  * {{{
+  * > val bar = 8 bytes
+  * Bytes(8)
+  * > bar * 3 + 2
+  * Bytes(26)
+  }}}
+  *
+  * Addition and subtraction of two Quantity's of different orders will return a Quantity of the *thinner* of the two
+  * input orders (reword). Multiplication, division, and modulo are not supported, as their return types under
+  * dimensional analysis are impossible to represent using Quantity's. Comparison is only allowed between two
+  * Quantity's of the same order, as the results between different orders would be unintuitive.
+  *
+  * {{{
+  * > val (baz, qux) = (3 bytes, 2 words)
+  * (Bytes(3), Words(2))
+  * > baz + qux
+  * Bytes(19)
+  * > baz < qux.toBytes
+  * true
+  }}}
+  *
+  * @tparam N Binary logarithm of the width ("order") of the quantity (e.g. byte = 0, short = 1, quad = 2, word = 3).
+  * Uses type-level natural numbers from the [[https://github.com/milessabin/shapeless shapeless metaprogramming
+  * library]].
+  */
 case class Quantity[N <: Nat](val underlying: Int) extends AnyVal with ScalaNumericAnyConversions with Serializable /*with Ordered[Quantity[_]]*/ {
   override def byteValue = underlying.byteValue
   override def doubleValue = underlying.doubleValue
@@ -51,8 +99,12 @@ case class Quantity[N <: Nat](val underlying: Int) extends AnyVal with ScalaNume
   // TODO use Orderable instead, but keep all the comparison operators here
   //override def compare(other: Quantity[_]) = value.compare(other.value)
 
+  /** @usecase def width: Bits
+    */
   def width(implicit order: ToInt[N]) = Bits(1 << order())
 
+  /** @usecase def toQuantity[M <: Nat]: Quantity[M]
+    */
   def toQuantity[M <: Nat](implicit order: ToInt[N], otherOrder: ToInt[M]) = {
     val diff = order() - otherOrder()
     Quantity[M](
@@ -66,10 +118,20 @@ case class Quantity[N <: Nat](val underlying: Int) extends AnyVal with ScalaNume
       }
     )
   }
+  /** @usecase def toBytes: Bytes
+    */
   def toBytes(implicit order: ToInt[N], otherOrder: ToInt[_0]) = toQuantity[_0]
+  /** @usecase def toShorts: Shorts
+    */
   def toShorts(implicit order: ToInt[N], otherOrder: ToInt[_1]) = toQuantity[_1]
+  /** @usecase def toQuads: Quads
+    */
   def toQuads(implicit order: ToInt[N], otherOrder: ToInt[_2]) = toQuantity[_2]
+  /** @usecase def toWords: Words
+    */
   def toWords(implicit order: ToInt[N], otherOrder: ToInt[_3]) = toQuantity[_3]
+  /** @usecase def toBits: Bits
+    */
   def toBits(implicit order: ToInt[N], byteOrder: ToInt[_0]) = Bits(toBytes.toInt * 8)
 
   def unary_+ = this
@@ -77,6 +139,7 @@ case class Quantity[N <: Nat](val underlying: Int) extends AnyVal with ScalaNume
 
   // TODO macro to cut down on boilerplate - should be able to derive all other comparison operators from == and <, including implicit conditions - or, do example for +, and it figures out -, *, and /
   // TODO calling these causes boxing - use macro to inject them, but still have them inherit from quantity, and keep the abstract declarations in Quantity
+  // TODO consider supporting arithmetic and comparisons with Bits as well
   def +(other: Int) = Quantity[N](underlying + other)
   def -(other: Int) = this + -other
   def %(other: Int) = Quantity[N](underlying % other)
@@ -84,23 +147,37 @@ case class Quantity[N <: Nat](val underlying: Int) extends AnyVal with ScalaNume
   def *(other: Int) = Quantity[N](underlying * other)
   def /(other: Int) = Quantity[N](underlying / other)
 
-  // comparing quantities of different widths is unintuitive, at the very least (because of truncation), so require
-  // users to explicitly convert to same width beforehand
+  /** @usecase def ==(other: Quantity[N]): Boolean
+    */
+  def ==(other: Quantity[N])(implicit order: ToInt[N]) = underlying == other.underlying
   def ==(other: Int) = underlying == other
-  def ==[M <: Nat](other: Quantity[N])(implicit order: ToInt[N]) = underlying == other.underlying
+  /** @usecase def !=(other: Quantity[N]): Boolean
+    */
+  def !=(other: Quantity[N])(implicit order: ToInt[N]) = !(this == other)
   def !=(other: Int) = underlying != other
-  def !=[M <: Nat](other: Quantity[N])(implicit order: ToInt[N]) = !(this == other)
+  /** @usecase def <(other: Quantity[N]): Boolean
+    */
+  def <(other: Quantity[N])(implicit order: ToInt[N]) = underlying < other.underlying
   def <(other: Int) = underlying < other
-  def <[M <: Nat](other: Quantity[N])(implicit order: ToInt[N]) = underlying < other.underlying
+  /** @usecase def <=(other: Quantity[N]): Boolean
+    */
+  def <=(other: Quantity[N])(implicit order: ToInt[N]) = this < other || this == other
   def <=(other: Int) = underlying <= other
-  def <=[M <: Nat](other: Quantity[N])(implicit order: ToInt[N]) = this < other || this == other
+  /** @usecase def >(other: Quantity[N]): Boolean
+    */
+  def >(other: Quantity[N])(implicit order: ToInt[N]) = !(this < other)
   def >(other: Int) = underlying > other
-  def >[M <: Nat](other: Quantity[N])(implicit order: ToInt[N]) = !(this < other)
+  /** @usecase def >=(other: Quantity[N]): Boolean
+    */
+  def >=(other: Quantity[N])(implicit order: ToInt[N]) = this > other || this == other
   def >=(other: Int) = underlying >= other
-  def >=[M <: Nat](other: Quantity[N])(implicit order: ToInt[N]) = this > other || this == other
 
   def abs = Quantity[N](underlying.abs)
+  /** @usecase def max(other: Quantity[N]): Quantity[N]
+    */
   def max(other: Int)(implicit order: ToInt[N]) = Quantity[N](underlying.max(other))
+  /** @usecase def min(other: Quantity[N]): Quantity[N]
+    */
   def min(other: Int)(implicit order: ToInt[N]) = Quantity[N](underlying.min(other))
 
   // TODO might require macro implicit injection of some kind
@@ -108,18 +185,40 @@ case class Quantity[N <: Nat](val underlying: Int) extends AnyVal with ScalaNume
   //override def toString = s"Quantity[<unknown width>]($underlying)"
 }
 
-private[bitsy] class ThinnerOps[N <: Nat](val underlying: Int) extends AnyVal {
-  def +[M <: Nat](other: Quantity[M])(implicit ev: LT[N, M], order: ToInt[N], otherOrder: ToInt[M]) = other.toQuantity[N] + underlying
+class ThinnerOps[N <: Nat](val underlying: Int) extends AnyVal {
+  /** @usecase def +[M <: Nat](other: Quantity[M]): Quantity[N]
+    */
+  def +[M <: Nat](other: Quantity[M])(implicit ev: LT[N, M], order: ToInt[N], otherOrder: ToInt[M]) =
+    other.toQuantity[N] + underlying
+  /** @usecase def -[M <: Nat](other: Quantity[M]): Quantity[N]
+    */
   def -[M <: Nat](other: Quantity[M])(implicit ev: LT[N, M], order: ToInt[N], otherOrder: ToInt[M]) = this + -other
-  def max[M <: Nat](other: Quantity[M])(implicit ev: LT[N, M], order: ToInt[N], otherOrder: ToInt[M]) = other.toQuantity[N].max(underlying)
-  def min[M <: Nat](other: Quantity[M])(implicit ev: LT[N, M], order: ToInt[N], otherOrder: ToInt[M]) = other.toQuantity[N].min(underlying)
+  /** @usecase def max[M <: Nat](other: Quantity[M]): Quantity[N]
+    */
+  def max[M <: Nat](other: Quantity[M])(implicit ev: LT[N, M], order: ToInt[N], otherOrder: ToInt[M]) =
+    other.toQuantity[N].max(underlying)
+  /** @usecase def min[M <: Nat](other: Quantity[M]): Quantity[N]
+    */
+  def min[M <: Nat](other: Quantity[M])(implicit ev: LT[N, M], order: ToInt[N], otherOrder: ToInt[M]) =
+    other.toQuantity[N].min(underlying)
 }
 
-private[bitsy] class WiderOps[N <: Nat](val underlying: Int) extends AnyVal {
-  def +[M <: Nat](other: Quantity[M])(implicit ev: LTEq[M, N], order: ToInt[N], otherOrder: ToInt[M]) = Quantity[N](underlying).toQuantity[M] + other.underlying
+class WiderOps[N <: Nat](val underlying: Int) extends AnyVal {
+  /** @usecase def +[M <: Nat](other: Quantity[M]): Quantity[M]
+    */
+  def +[M <: Nat](other: Quantity[M])(implicit ev: LTEq[M, N], order: ToInt[N], otherOrder: ToInt[M]) =
+    Quantity[N](underlying).toQuantity[M] + other.underlying
+  /** @usecase def -[M <: Nat](other: Quantity[M]): Quantity[M]
+    */
   def -[M <: Nat](other: Quantity[M])(implicit ev: LTEq[M, N], order: ToInt[N], otherOrder: ToInt[M]) = this + -other
-  def max[M <: Nat](other: Quantity[M])(implicit ev: LTEq[M, N], order: ToInt[N], otherOrder: ToInt[M]) = other.max(Quantity[N](underlying).toQuantity[M].underlying)
-  def min[M <: Nat](other: Quantity[M])(implicit ev: LTEq[M, N], order: ToInt[N], otherOrder: ToInt[M]) = other.min(Quantity[N](underlying).toQuantity[M].underlying)
+  /** @usecase def max[M <: Nat](other: Quantity[M]): Quantity[M]
+    */
+  def max[M <: Nat](other: Quantity[M])(implicit ev: LTEq[M, N], order: ToInt[N], otherOrder: ToInt[M]) =
+    other.max(Quantity[N](underlying).toQuantity[M].underlying)
+  /** @usecase def min[M <: Nat](other: Quantity[M]): Quantity[M]
+    */
+  def min[M <: Nat](other: Quantity[M])(implicit ev: LTEq[M, N], order: ToInt[N], otherOrder: ToInt[M]) =
+    other.min(Quantity[N](underlying).toQuantity[M].underlying)
 }
 
 private[bitsy] trait QuantityLow {
@@ -149,10 +248,10 @@ object Quantity extends QuantityLow {
       def >>>(bits: Bits) = value >>> bits.toInt
     }
 
-    // FIXME move elsewhere
+    // FIXME move elsewhere (?)
     implicit class RichInt(val value: Int) extends AnyVal {
-      // spire may actually have something for this - if not, add it
-      def toggleEndian = JInt.reverseBytes(value)
+      // spire may actually have something for this - if not, contribute it
+      def toggleEndian = Integer.reverseBytes(value)
       def toByteArray = bigIntByteArray(BigInt(value), 4)
     }
     implicit class RichShort(val value: Short) extends AnyVal {
@@ -170,7 +269,7 @@ object Quantity extends QuantityLow {
     }
     implicit def enrichUShort(value: UShort) = new RichUShort(value.toShort)
     class RichUInt(val value: Int) extends AnyVal {
-      def toggleEndian = UInt(JInt.reverseBytes(value))
+      def toggleEndian = UInt(Integer.reverseBytes(value))
       def toByteArray = bigIntByteArray(BigInt(value), 4)
     }
     implicit def enrichUInt(value: UInt) = new RichUInt(value.toInt)
@@ -182,76 +281,13 @@ object Quantity extends QuantityLow {
   }
 }
 
-case class Bits(override val underlying: Int) extends AnyVal with ScalaNumericAnyConversions with Serializable with Ordered[Bits] {
-  override def byteValue = underlying.byteValue
-  override def doubleValue = underlying.doubleValue
-  override def floatValue = underlying.floatValue
-  override def intValue = underlying.intValue
-  override def longValue = underlying.longValue
-  override def shortValue = underlying.shortValue
-  override def isWhole = true
-
-  override def compare(other: Bits) = underlying.compare(other.underlying)
-
-  def toQuantity[N <: Nat](implicit order: ToInt[N]) = Quantity[N](ceil(underlying.toDouble / (1 << (order() + 3))).toInt)
-  def toBytes = toQuantity[_0]
-  def toShorts = toQuantity[_1]
-  def toQuads = toQuantity[_2]
-  def toWords = toQuantity[_3]
-
-  def index: Byte = (underlying % 8).toByte
-  // TODO support other number widths as well? once we're using arbitrarily-large number (bitstring) classes, should support those as well
-  def mask: UByte = ub"1" << index // TODO test with negative underlying
-  // TODO mask for setting all bits up to underlying as well
-  // TODO separate index/mask method families for different endianness?
-
-  def unary_+ = this
-  def unary_- = new Bits(-1 * underlying)
-
-  def +(other: Int) = new Bits(underlying + other)
-  def -(other: Int) = new Bits(underlying - other)
-  def *(other: Int) = new Bits(underlying * other)
-  def /(other: Int) = new Bits(underlying / other)
-  def %(other: Int) = new Bits(underlying % other)
-
-  def ==(other: Int) = underlying == other
-  def !=(other: Int) = underlying != other
-  def <(other: Int) = underlying < other
-  def <=(other: Int) = underlying <= other
-  def >(other: Int) = underlying > other
-  def >=(other: Int) = underlying >= other
-
-  def abs = new Bits(underlying.abs)
-  def max(other: Int) = new Bits(underlying.max(other))
-  def min(other: Int) = new Bits(underlying.min(other))
-}
-
-private[bitsy] class BitsOps(val underlying: Int) extends AnyVal {
-  // TODO get around type erasure making these have the same signature as their equivalents that accept Int
-  def +(other: Bits) = new Bits(underlying + other.underlying)
-  def -(other: Bits) = new Bits(underlying - other.underlying)
-  def ==(other: Bits) = underlying == other.underlying
-  def !=(other: Bits) = underlying != other.underlying
-  def <(other: Bits) = underlying < other.underlying
-  def <=(other: Bits) = underlying <= other.underlying
-  def >(other: Bits) = underlying > other.underlying
-  def >=(other: Bits) = underlying >= other.underlying
-  def max(other: Bits) = new Bits(underlying.max(other.underlying))
-  def min(other: Bits) = new Bits(underlying.min(other.underlying))
-}
-
-object Bits {
-  implicit def bitsOps(bits: Bits) = new BitsOps(bits.underlying)
-}
-
-// TODO consider way to parametrize Quantity on other Quantity (or on phantom newtype) to represent an "offset"
-
 trait QuantityBuilder[N <: Nat] {
   def apply(value: Int) = Quantity[N](value)
   def order(value: Int) = Quantity.order[N](value)
 }
 
-// TODO consider UWords, etc, as well as wrapping Longs - some kind of type parametrization - probably not currently supported by scala
+// TODO consider UWords, etc, as well as wrapping Longs - some kind of type parametrization
+// probably not currently supported by scala - will need macros, won't be generic
 object Bytes extends QuantityBuilder[_0]
 object Shorts extends QuantityBuilder[_1]
 object Quads extends QuantityBuilder[_2]

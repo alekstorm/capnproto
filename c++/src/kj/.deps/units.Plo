@@ -1,0 +1,8 @@
+src/kj/units.lo: src/kj/units.c++ src/kj/units.h src/kj/common.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.7/include/stddef.h
+
+src/kj/units.h:
+
+src/kj/common.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.7/include/stddef.h:

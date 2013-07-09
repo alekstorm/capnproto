@@ -24,7 +24,8 @@
 package capnproto.test
 
 import java.io.File
-import java.lang.{Boolean => JBoolean, Byte => JByte, Double => JDouble, Integer, Float => JFloat, Long => JLong, Short => JShort}
+import java.lang.{Boolean => JBoolean, Byte => JByte, Double => JDouble, Integer, Float => JFloat, Long => JLong,
+  Short => JShort}
 import java.nio.charset.StandardCharsets
 
 import scala.runtime.BoxedUnit
@@ -43,7 +44,7 @@ import spire.math.{UByte, UInt, ULong, UShort}
 import spire.syntax.literals
 
 import capnproto.{GrowingManager, Manager}
-import capnproto.composite.{ListGateway, Modifiable, Struct, StructGateway}
+import capnproto.composite.{ListGateway, Struct, StructGateway}
 
 import generated._
 
@@ -141,9 +142,12 @@ class TestRegressions extends FunSuite {
   }
 
   // TODO scala's type members would let us only pass the containing type
-  def buildCompositeList[R <: Struct[R, B], B <: R with Modifiable[R]](gateway: ListGateway[StructGateway[R, B]], entry: JObject#Values)(implicit fromJson: FromJson[B]) {
+  def buildCompositeList[R <: Struct[R, B], B <: R with Modifiable[R]](gateway: ListGateway[StructGateway[R, B]],
+      entry: JObject#Values)(implicit fromJson: FromJson[B]) {
     val list = gateway.fill(convertUInt32(entry("size")))
-    entry("values").asInstanceOf[JObject#Values].foreach(pair => fromJson(list.get(convertInt32(pair._1)).init(), pair._2.asInstanceOf[JObject#Values]))
+    entry("values").asInstanceOf[JObject#Values].foreach { pair =>
+      fromJson(list.get(convertInt32(pair._1)).init(), pair._2.asInstanceOf[JObject#Values])
+    }
   }
 
   // TODO make automatic CnP-to-JSON conversion look sort of like this
@@ -185,13 +189,17 @@ class TestRegressions extends FunSuite {
       fields.get("float32List").map(field => buildPrimitiveList(builder.float32List, field.asInstanceOf[JObject#Values]))
       fields.get("float64List").map(field => buildPrimitiveList(builder.float64List, field.asInstanceOf[JObject#Values]))*/
 
-      fields.get("structList").map(field => buildCompositeList[TestAllTypes.Reader, TestAllTypes.Builder](builder.structList, field.asInstanceOf[JObject#Values]))
+      fields.get("structList").map { field =>
+        buildCompositeList[TestAllTypes.Reader, TestAllTypes.Builder](builder.structList,
+          field.asInstanceOf[JObject#Values])
+      }
     }
   }
 
   test("sdfsdf") {
     try {
-      val json = JsonParser.parse(FileUtils.readFileToString(new File("src/test/resources/test.json"), StandardCharsets.UTF_8).replaceAll("#.*", " "))
+      val json = JsonParser.parse(FileUtils.readFileToString(
+        new File("src/test/resources/test.json"), StandardCharsets.UTF_8).replaceAll("#.*", " "))
       (json \ "tests").asInstanceOf[JArray].values.asInstanceOf[List[JObject#Values]].foreach { test =>
         GrowingManager.open { manager =>
           test("id") match {

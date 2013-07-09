@@ -1,0 +1,78 @@
+src/capnp/c++.capnp.lo: src/capnp/c++.capnp.c++ src/capnp/c++.capnp.h \
+ src/capnp/generated-header-support.h src/capnp/layout.h src/kj/common.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.7/include/stddef.h src/capnp/common.h \
+ src/kj/units.h src/kj/common.h /usr/include/inttypes.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/bits/predefs.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.7/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h src/capnp/blob.h \
+ src/kj/string.h /usr/include/c++/4.7/initializer_list \
+ /usr/include/c++/4.7/x86_64-linux-gnu/bits/c++config.h \
+ /usr/include/c++/4.7/x86_64-linux-gnu/bits/os_defines.h \
+ /usr/include/c++/4.7/x86_64-linux-gnu/bits/cpu_defines.h src/kj/array.h \
+ /usr/include/string.h /usr/include/xlocale.h \
+ /usr/include/x86_64-linux-gnu/bits/string3.h src/capnp/endian.h \
+ src/capnp/list.h
+
+src/capnp/c++.capnp.h:
+
+src/capnp/generated-header-support.h:
+
+src/capnp/layout.h:
+
+src/kj/common.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.7/include/stddef.h:
+
+src/capnp/common.h:
+
+src/kj/units.h:
+
+src/kj/common.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/features.h:
+
+/usr/include/x86_64-linux-gnu/bits/predefs.h:
+
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.7/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/x86_64-linux-gnu/bits/wchar.h:
+
+src/capnp/blob.h:
+
+src/kj/string.h:
+
+/usr/include/c++/4.7/initializer_list:
+
+/usr/include/c++/4.7/x86_64-linux-gnu/bits/c++config.h:
+
+/usr/include/c++/4.7/x86_64-linux-gnu/bits/os_defines.h:
+
+/usr/include/c++/4.7/x86_64-linux-gnu/bits/cpu_defines.h:
+
+src/kj/array.h:
+
+/usr/include/string.h:
+
+/usr/include/xlocale.h:
+
+/usr/include/x86_64-linux-gnu/bits/string3.h:
+
+src/capnp/endian.h:
+
+src/capnp/list.h:

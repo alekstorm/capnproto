@@ -1,1 +1,1 @@
-../../../../c++/src/capnproto/c++.capnp
+/home/alek/capnproto/c++/src/capnp/c++.capnp

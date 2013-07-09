@@ -24,7 +24,8 @@
 package capnproto
 package composite
 
-import java.lang.{Boolean => BoxedBoolean, Byte => BoxedByte, Double => BoxedDouble, Float => BoxedFloat, Integer => BoxedInt, Long => BoxedLong, Short => BoxedShort}
+import java.lang.{Boolean => BoxedBoolean, Byte => BoxedByte, Double => BoxedDouble, Float => BoxedFloat,
+  Integer => BoxedInt, Long => BoxedLong, Short => BoxedShort}
 import java.util.AbstractList
 
 import scala.collection.generic.Growable
@@ -34,12 +35,18 @@ import spire.math.{UByte, UInt, ULong, UShort}
 import spire.syntax._
 
 import bitsy._; import Quantity.implicits._
+import internal._
 
-// TODO use default
-class ListGateway[T](context: BaseContext[ListPointerTarget], default: Option[Array[Byte]])(implicit formatter: Formatter[T]) extends CollectionGateway[List[T], ModifiableList[T]](context, default) {
-  private var _capacity = ui"0"
-
+class ListGateway[T](override val context: BaseContext[ListPointerTarget], default: Option[Array[Byte]])
+    (implicit formatter: Formatter[T])
+    extends CollectionGateway[List[T]] {
   override def reader = new List[T](context, ui"0")
+}
+
+class ModifiableListGateway[T](context: BaseContext[ListPointerTarget], default: Option[Array[Byte]])
+    (implicit formatter: Formatter[T])
+    extends ListGateway[T](context, default) with ModifiableCollectionGateway[List[T], ModifiableList[T]] {
+  private var capacity = ui"0"
 
   override def builder = if (context.isReset) None else Some(directBuilder)
 
@@ -69,8 +76,6 @@ class ListGateway[T](context: BaseContext[ListPointerTarget], default: Option[Ar
     directBuilder
   }
 
-  def capacity = _capacity
-
   private def directBuilder = new ModifiableList[T](context, capacity)
 
   // TODO rename to be different from superclass version
@@ -94,12 +99,12 @@ class ListGateway[T](context: BaseContext[ListPointerTarget], default: Option[Ar
       }
       context.writeFarPointer(FarPointer(false, 0 words, targetSegmentId), 1 words, newNearPointerTarget)
     }
-    _capacity = newCapacity
+    capacity = newCapacity
   }
 }
 
 // can't make a type alias, since it would be invisible from Java
-class DataGateway(context: BaseContext[ListPointerTarget], default: Option[Array[Byte]])(implicit formatter: Formatter[UByte]) extends ListGateway[UByte](context, default)
+//class ModifiableDataGateway(context: BaseContext[ListPointerTarget], default: Option[Array[Byte]])(implicit formatter: Formatter[UByte]) extends ModifiableListGateway[UByte](context, default)
 
 // TODO does specializing automatically work on value classes?
 // TODO make covariant (?)
@@ -107,7 +112,8 @@ class DataGateway(context: BaseContext[ListPointerTarget], default: Option[Array
 // TODO use default
 // expose an interface that provides random element access and modification, but insertion and removal only at the end, with a maximum size (capacity)
 // TODO separate classes for reset, allocated Lists
-class List[T](override val context: BaseContext[ListPointerTarget], _capacity: UInt)(implicit formatter: Formatter[T]) extends AbstractList[T] with Comparable[List[T]] with Collection[List[T], ModifiableList[T]] {
+class List[T](override val context: BaseContext[ListPointerTarget], _capacity: UInt)(implicit formatter: Formatter[T])
+    extends AbstractList[T] with Comparable[List[T]] with Collection[List[T], ModifiableList[T]] {
   protected def segment = NearContext.compositeSegment(context.near)
 
   override def size = if (context.isReset) 0 else context.near.elemCount.toInt // FIXME (?)
@@ -135,7 +141,10 @@ class List[T](override val context: BaseContext[ListPointerTarget], _capacity: U
 }
 
 // TODO consider making inner class of List as well
-class ModifiableList[T](context: BaseContext[ListPointerTarget], private var _capacity: UInt)(implicit formatter: Formatter[T]) extends List[T](context, _capacity) with Modifiable[List[T]] with Growable[T] {
+class ModifiableList[T](context: BaseContext[ListPointerTarget], private var _capacity: UInt)
+    (implicit formatter: Formatter[T])
+    extends List[T](context, _capacity) with Growable[T] {
+
   override def set(idx: Int, value: T) = {
     if (idx >= size)
       throw new Exception // FIXME
@@ -182,6 +191,7 @@ sealed trait Formatter[T] {
   def write(context: BaseContext[ListPointerTarget], idx: Int, value: T)
 }
 
+// TODO propose @notDocumentable, to disable doc generation for some compilation unit
 object Formatter {
   final val voidEmpty = () // TODO make this a member of Formatter (?)
   // can't be `object`s because nested objects can't be accessed from Java (even as Formatter$voidFormatter$)
@@ -289,15 +299,14 @@ object Formatter {
   def enumFormatter[E <: Enum[E]](enumerants: Array[E]) = new EnumFormatter[E](enumerants)
 
   // TODO is there a way to not pass all these type parameters?
-  class CompositeFormatter[C <: Composite[C, MC], MC <: C with Modifiable[C], P <: NearPointerTarget, G <: Gateway[C, MC, P]](gateway: BaseContext[P] => G) extends Formatter[G] {
+  /*class CompositeFormatter[C <: Composite[C, _], P <: NearPointerTarget, G <: Gateway[C, P]](gateway: BaseContext[P] => G, mutableGateway: BaseContext[P] => MG) extends Formatter[G] {
     def size = PointerElemSize
-    def read(context: BaseContext[ListPointerTarget], idx: Int) = gateway(new Context(context.manager, context.near.segmentId, context.near.targetOffset + idx))
-    def write(context: BaseContext[ListPointerTarget], idx: Int, value: G) { value.builder.map(composite => read(context, idx).set(_)) }
+    def read(context: BaseContext[ListPointerTarget], idx: Int) = gateway(new Context(context.manager, context.near.segmentId, context.near.targetOffset + idx)).reader
+    def write(context: BaseContext[ListPointerTarget], idx: Int, value: C) { mutableGateway(new Context(context.manager, context.near.segmentId, context.near.targetOffset + idx)).set(value) }
   }
-  def listFormatter[T](implicit elemFormatter: Formatter[T]) = new CompositeFormatter[List[T], ModifiableList[T], ListPointerTarget, ListGateway[T]](new ListGateway[T](_, None))
-  def dataFormatter = new CompositeFormatter[List[UByte], ModifiableList[UByte], ListPointerTarget, DataGateway](new DataGateway(_, None)(uint8Formatter))
-  def textFormatter = new CompositeFormatter[Text, ModifiableText, ListPointerTarget, TextGateway](new TextGateway(_, None))
-  def structFormatter[S <: Struct[S, MS], MS <: S with Modifiable[S]](elemFactory: StructFactory[S, MS], dataSize: Words, pointerSize: Words) = new CompositeFormatter[S, MS, StructPointerTarget, StructGateway[S, MS]](new StructGateway(_, elemFactory, dataSize, pointerSize, None))
+  def listFormatter[T](implicit elemFormatter: Formatter[T]) = new CompositeFormatter[List[T], ListPointerTarget, ListGateway[T], ModifiableListGateway[T]](new ListGateway[T](_, None), new ModifiableListGateway[T](_, None))
+  //def textFormatter = new CompositeFormatter[Text, ListPointerTarget, TextGateway, ModifiableTextGateway](_ => new TextGateway, new ModifiableTextGateway(_, None))
+  def structFormatter[S <: Struct[S, MS], MS <: S](elemFactory: StructFactory[S, MS], dataSize: Words, pointerSize: Words) = new CompositeFormatter[S, StructPointerTarget, StructGateway[S], ModifiableStructGateway[S, MS]](new StructGateway(_, elemFactory), new ModifiableStructGateway(_, elemFactory, dataSize, pointerSize, None))*/
   // TODO handle inline structs
   // TODO implicitly-available "instance" of a class containing all static members of a given Java class
 }

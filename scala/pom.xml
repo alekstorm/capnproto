@@ -8,11 +8,9 @@
   <name>Cap'n Proto Scala</name>
 
   <properties>
-    <junit.version>4.11</junit.version>
     <github.username>alekstorm</github.username>
     <github.repo>capnproto</github.repo>
     <org.scala-lang.version>2.10.2</org.scala-lang.version>
-    <scala-maven-plugin.version>3.1.5</scala-maven-plugin.version>
   </properties>
 
   <dependencies>
@@ -70,7 +68,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
+      <version>4.11</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -107,33 +105,8 @@
     </dependency>
   </dependencies>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>sonatype-releases</id>
-      <url>http://oss.sonatype.org/content/repositories/releases</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>clojars.org</id>
-      <url>http://clojars.org/repo</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <build>
     <plugins>
-      <!-- for scaladoc source URLs -->
-            <plugin>
-                <groupId>com.github.koraktor</groupId>
-                <artifactId>mavanagaiata</artifactId>
-                <executions>
-                    <execution>
-                        <id>load-git-branch</id>
-                        <goals>
-                            <goal>commit</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -159,6 +132,8 @@
       // FIXME Despite having ~/.cabal/bin in my PATH, this complains that it can't find capnpc (`which capnpc` also
       // mysteriously reports no results, yet executing it manually works). Would appreciate others testing and
       // reporting whether this is a quirk unique to my configuration.
+      // TODO clear directory before generating, so structs that get removed/renamed don't get left over from the
+      // previous run - move to shell script
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -183,48 +158,63 @@
         </configuration>
       </plugin> -->
 
-      <!-- compile Scala sources -->
-      <!-- TODO different artifacts for different target JDKs (named with -jdk15, etc), use Animal Sniffer to ensure correct bootclasspath -->
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
-        <version>${scala-maven-plugin.version}</version>
+        <version>3.1.5</version>
         <executions>
+          <!-- compile Scala sources -->
+          <!-- TODO different artifacts for different target JDKs (named with -jdk15, etc), use Animal Sniffer to ensure correct bootclasspath -->
           <execution>
             <goals>
               <goal>compile</goal>
               <goal>testCompile</goal>
             </goals>
+            <configuration>
+              <args>
+                <!-- TODO maybe support version without standard libs (-Yno-predef), for low-memory systems like Android -->
+                <arg>-deprecation</arg>
+                <arg>-feature</arg>
+                <arg>-language:_</arg>
+                <arg>-optimize</arg>
+                <arg>-unchecked</arg>
+                <arg>-Xfatal-warnings</arg>
+                <!-- TODO allow these to be disabled, or provide separate jars (with different classifiers) -->
+                <arg>-Yclosure-elim</arg>
+                <arg>-Ydead-code</arg>
+                <arg>-Yinline</arg>
+                <arg>-Yinline-handlers</arg>
+                <arg>-Yinline-warnings</arg>
+                <arg>-Ywarn-all</arg>
+              </args>
+              <!-- <recompileMode>incremental</recompileMode>
+              <useZincServer>true</useZincServer> -->
+            </configuration>
+          </execution>
+          <!-- generate scaladocs -->
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>doc</goal>
+            </goals>
+            <configuration>
+              <args>
+                <arg>-doc-source-url</arg>
+                <!-- TODO link to specific file revision -->
+                <arg>https://github.com/${github.username}/${github.repo}/master€{FILE_PATH}.scala</arg>
+                <arg>-external-urls</arg>
+                <arg>scala=http://www.scala-lang.org/api/${org.scala-lang.version}</arg>
+                <arg>-implicits</arg>
+                <!-- required for the FILE_PATH variable in -doc-source-url to be relative -->
+                <arg>-sourcepath</arg>
+                <arg>${project.basedir}</arg>
+              </args>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <args>
-            <!-- TODO maybe support version without standard libs (-Yno-predef), for low-memory systems like Android -->
-            <arg>-deprecation</arg>
-            <arg>-doc-source-url</arg>
-            <!-- TODO link to specific file revision -->
-            <arg>https://github.com/${github.username}/${github.repo}/master€{FILE_PATH}.scala</arg>
-            <arg>-feature</arg>
-            <arg>-language:_</arg>
-            <arg>-optimize</arg>
-            <!-- required for the FILE_PATH variable in -doc-source-url to be relative -->
-            <arg>-sourcepath</arg>
-            <arg>${project.basedir}</arg>
-            <arg>-unchecked</arg>
-            <arg>-Xfatal-warnings</arg>
-            <!-- TODO allow these to be disabled, or provide separate jars (with different classifiers) -->
-            <arg>-Yclosure-elim</arg>
-            <arg>-Ydead-code</arg>
-            <arg>-Yinline</arg>
-            <arg>-Yinline-handlers</arg>
-            <arg>-Yinline-warnings</arg>
-            <arg>-Ywarn-all</arg>
-          </args>
-          <!-- <recompileMode>incremental</recompileMode>
-          <useZincServer>true</useZincServer> -->
-        </configuration>
       </plugin>
 
+      <!-- compile generated Java test sources -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

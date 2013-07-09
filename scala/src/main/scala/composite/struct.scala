@@ -25,19 +25,26 @@ package capnproto
 package composite
 
 import bitsy._; import Quantity.implicits._
+import internal._
 
 /** Factory class inherited by generated Java code.
   *
   * Used by `StructGateway` to construct `Builder`s, since constructors can't be curried in the JVM.
   */
-trait StructFactory[S <: Struct[S, MS], MS <: S /*with Modifiable[S]*/] {
+trait StructFactory[S <: Struct[S, MS], MS <: S] {
   def reader(context: NearContext[StructPointerTarget]): S
   def builder(context: NearContext[StructPointerTarget]): MS
 }
 
-class StructGateway[S <: Struct[S, MS], MS <: S with Modifiable[S]](override val context: BaseContext[StructPointerTarget], factory: StructFactory[S, MS], dataSize: Words, pointerSize: Words, default: Option[Array[Byte]]) extends Gateway[S, MS, StructPointerTarget] {
+class StructGateway[S <: Struct[S, _]](override val context: BaseContext[StructPointerTarget],
+    factory: StructFactory[S, _])
+    extends Gateway[S, StructPointerTarget] {
   override def reader = factory.reader(context.near)
+}
 
+class ModifiableStructGateway[S <: Struct[S, MS], MS <: S](override val context: BaseContext[StructPointerTarget],
+    factory: StructFactory[S, MS], dataSize: Words, pointerSize: Words, default: Option[Array[Byte]])
+    extends StructGateway[S](context, factory) with ModifiableGateway[S, MS, StructPointerTarget] {
   override def builder = if (context.isReset) None else Some(directBuilder)
 
   override def set(struct: S): MS = {
@@ -64,9 +71,9 @@ class StructGateway[S <: Struct[S, MS], MS <: S with Modifiable[S]](override val
     if (targetSegmentId == context.near.segmentId)
       context.near.writeNearPointer(offset, StructPointerTarget(dataSize, pointerSize))
     else
-      context.writeFarPointer(FarPointer(false, 0 words, targetSegmentId), 1 words, StructPointerTarget(dataSize, pointerSize))
+      context.writeFarPointer(FarPointer(false, 0 words, targetSegmentId), 1 words,
+        StructPointerTarget(dataSize, pointerSize))
   }
 }
 
-// `MS` doesn't have a subtype bound of `Modifiable[S]` because Java doesn't know how to satisfy it
-trait Struct[S <: Struct[S, MS], MS <: S /*with Modifiable[S]*/] extends Composite[S, MS] { type P = StructPointerTarget }
+trait Struct[S <: Struct[S, MS], MS <: S] extends Composite[S, MS] { type P = StructPointerTarget }

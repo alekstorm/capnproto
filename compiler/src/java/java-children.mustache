@@ -1,0 +1,203 @@
+{{!
+| Copyright (c) 2013, Kenton Varda <temporal@gmail.com>
+| All rights reserved.
+|
+| Redistribution and use in source and binary forms, with or without
+| modification, are permitted provided that the following conditions are met:
+|
+| 1. Redistributions of source code must retain the above copyright notice, this
+|    list of conditions and the following disclaimer.
+| 2. Redistributions in binary form must reproduce the above copyright notice,
+|    this list of conditions and the following disclaimer in the documentation
+|    and/or other materials provided with the distribution.
+|
+| THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+| ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+| WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+| DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+| ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+| (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+| LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+| ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+| (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+| SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Template for generated Java files.
+}}
+
+{{#structChildren}}
+  public {{#inner?}}static{{/inner?}} final class {{structName}} implements capnproto.composite.StructFactory<{{structName}}.Reader, {{structName}}.Builder> {
+    public static final {{structName}} FACTORY = new {{structName}}();
+
+    public static final int DATA_SIZE = {{structDataSize}};
+    public static final int POINTER_SIZE = {{structPointerCount}};
+
+    {{! public static final capnproto.Schema SCHEMA = {{structSchema} }; }}
+
+    private {{structName}}() {}
+
+    public final Reader reader(capnproto.internal.NearContext<capnproto.internal.StructPointerTarget> context) {
+      return new Reader(context);
+    }
+
+    public final Builder builder(capnproto.internal.NearContext<capnproto.internal.StructPointerTarget> context) {
+      return new Builder(context);
+    }
+
+    {{! TODO handle structs that are too short }}
+    public static /*final*/ class Reader implements capnproto.composite.Struct<Reader, Builder> {
+      protected capnproto.internal.BaseContext<capnproto.internal.StructPointerTarget> _context;
+
+      protected void _init(capnproto.internal.BaseContext<capnproto.internal.StructPointerTarget> context) {
+        _context = context;
+
+        {{#structFields}}{{#fieldComposite?}}
+          capnproto.internal.Context _{{fieldName}}_context = new capnproto.internal.Context<capnproto.internal.{{fieldGatewayType}}PointerTarget>(_context.manager(), _context.segmentId(), _context.near().targetOffset() + DATA_SIZE + {{fieldOffset}});
+          {{#fieldStruct?}}
+            _{{fieldName}}_gateway = new {{fieldGateway}}(_{{fieldName}}_context, {{structName}}.FACTORY, {{structName}}.DATA_SIZE, {{structName}}.POINTER_SIZE {{fieldDefaultBytes}});
+          {{/fieldStruct?}}
+          {{#fieldList?}}
+            _{{fieldName}}_gateway = new {{fieldGateway}}(_{{fieldName}}_context, {{fieldDefaultBytes}}, {{listElemFormatter}});
+          {{/fieldList?}}
+        {{/fieldComposite?}}{{/structFields}}
+      }
+
+      public Reader(capnproto.internal.BaseContext<capnproto.internal.StructPointerTarget> context) {
+        _init(context);
+      }
+
+      public Reader(capnproto.Manager manager) {
+        manager.allocateSegment(DATA_SIZE + POINTER_SIZE + 1);
+        _init(new capnproto.internal.NearContext<capnproto.internal.StructPointerTarget>(manager, manager.segmentCount() - 1, 0));
+        _context.writeNearPointer(1, new capnproto.internal.StructPointerTarget(DATA_SIZE, POINTER_SIZE));
+      }
+
+      // TODO avoid name collisions
+      public capnproto.internal.BaseContext context() { return _context; }
+
+      {{#structFields}}
+        // {{fieldDecl}}
+        {{#fieldPrimitive?}}
+          {{^fieldEnum?}}
+            {{! TODO pre-allocated Reader instance for reset pointers }}
+            /*private static final*/ {{fieldJavaType}} _{{fieldName}}_default = {{fieldJavaDefaultMask}};
+            public {{fieldJavaType}} get{{fieldNameTitleCase}}() { return _context.isReset() ? _{{fieldName}}_default : capnproto.internal.Segment.read{{fieldCapnType}}$extension(_context.near().segment(), _context.near().targetOffset() * {{fieldSize}} + {{fieldOffset}}, _{{fieldName}}_default); }
+          {{/fieldEnum?}}{{#fieldEnum?}}
+            /*private static final*/ char _{{fieldName}}_default = {{fieldJavaDefaultMask}};
+            public {{fieldJavaType}} get{{fieldNameTitleCase}}() { return {{fieldJavaType}}.values()[_context.isReset() ? _{{fieldName}}_default : capnproto.internal.Segment.readEnum$extension(_context.near().segment(), _context.near().targetOffset() * 4 + {{fieldOffset}}, _{{fieldName}}_default)]; }
+          {{/fieldEnum?}}
+          public {{fieldScalaType}} {{fieldName}}() { return get{{fieldNameTitleCase}}(); }
+        {{/fieldPrimitive?}}
+        {{#fieldComposite?}}
+          /*private final*/ {{fieldGateway}} _{{fieldName}}_gateway;
+          public {{fieldGateway}} get{{fieldNameTitleCase}}() { return _{{fieldName}}_gateway; }
+          public {{fieldGateway}} {{fieldName}}() { return get{{fieldNameTitleCase}}(); }
+        {{/fieldComposite?}}
+      {{/structFields}}
+    }
+
+    {{! TODO prefix illegal Java identifiers with $ }}
+    public static final class Builder extends Reader {
+      @Override
+      protected void _init(capnproto.internal.BaseContext<capnproto.internal.StructPointerTarget> context) {
+        _context = context;
+
+        {{#structFields}}{{#fieldComposite?}}
+          _{{fieldName}}_gateway = new {{fieldGateway}}(new capnproto.internal.Context<capnproto.internal.{{fieldGatewayType}}PointerTarget>(_context.manager(), _context.segmentId(), _context.near().targetOffset() + DATA_SIZE + {{fieldOffset}}), {{#fieldStruct?}}{{structName}}.FACTORY, {{structName}}.DATA_SIZE, {{structName}}.POINTER_SIZE {{/fieldStruct?}}{{fieldDefaultBytes}}{{#fieldList?}}, {{listElemFormatter}}{{/fieldList?}});
+        {{/fieldComposite?}}{{/structFields}}
+      }
+
+      public Builder(capnproto.internal.BaseContext<capnproto.internal.StructPointerTarget> context) { super(context); }
+      public Builder(capnproto.Manager manager) {
+        super(manager);
+        capnproto.internal.NearContext.eraseComposite(_context.near(), capnproto.internal.NearContext.enrichStructGlue());
+      }
+
+      {{! TODO consider returning unsigned wrappers for java-style accessors by default (togglable by annotation) - performance hit, but follows spec }}
+      {{! TODO annotation for setting identifiers as package-private, rather than public - no other visibility choices }}
+      {{#structFields}}
+        // {{fieldDecl}}
+        {{#fieldPrimitive?}}
+          public void set{{fieldNameTitleCase}}({{fieldJavaType}} value) { capnproto.internal.Segment.write{{fieldCapnType}}$extension(_context.near().segment(), _context.near().targetOffset() * {{fieldSize}} + {{fieldOffset}}, {{^fieldEnum?}}value{{/fieldEnum?}}{{#fieldEnum?}}(char)value.ordinal(){{/fieldEnum?}}, _{{fieldName}}_default); }
+          // FIXME - java annotation that adds required information for setters to work from Scala
+          //public void {{fieldName}}_$eq({{fieldScalaType}} value) { set{{fieldNameTitleCase}}(value); }
+        {{/fieldPrimitive?}}
+        {{#fieldComposite?}}
+          /*private final*/ {{fieldGateway}} _{{fieldName}}_gateway;
+        {{/fieldComposite?}}
+      {{/structFields}}
+      {{=<% %>=}}<%!{{#structUnions}}
+        public abstract class {{unionNameTitleCase}}<T> extends capnproto.internal.Union<T, {{unionNameTitleCase}}.Field> {
+          public enum Field {
+            {{#unionFields}}{{fieldNameUpperCase}}{{sep}}{{/unionFields}}
+          }
+
+          protected {{unionNameTitleCase}}(Field _which, T _value) { super(_which, _value); }
+        }
+        {{#unionFields}}
+          public static class {{fieldNameTitleCase}} extends {{#unionNameTitleCase}}<{{fieldGenericJavaType}}> {
+            public {{fieldNameTitleCase}}({{fieldJavaType}} value) { super({{fieldNameUpperCase}}, value); }
+            // TODO unapply, etc
+          }
+        {{/unionFields}}
+        public static class {{unionNameTitleCase}}_Unknown extends {{unionNameTitleCase}}<Character> {
+          public {{unionNameTitleCase}}_Unknown(char _which) { super(_UNKNOWN, _which); }
+        }
+        public {{unionNameTitleCase}} get{{unionNameTitleCase}}() {
+          short idx = segment.readDiscriminant({{unionTagOffset}});
+          switch (idx) {
+            {{#unionFields}}
+              case {{fieldOrdinal}}: return new {{fieldNameTitleCase}}(segment.read{{fieldCapnType}}({{fieldOrdinal}}));
+            {{/unionFields}}
+            default: return new {{unionNameTitleCase}}_Unknown(idx);
+          }
+        }
+        public {{unionNameTitleCase}} {{unionName}}() { return get{{unionNameTitleCase}}(); }
+        public void set{{unionNameTitleCase}}({{unionNameTitleCase}} union) {
+          switch (union.which()) {
+            {{#unionFields}}
+              case {{fieldNameUpperCase}}: segment.write{{fieldCapnType}}(({{fieldJavaType}})union.value()); break;
+            {{/unionFields}}
+          }
+          segment.writeDiscriminant({{unionTagOffset}}, (union.which() == _UNKNOWN) ? (short)union.value() : union.which());
+        }
+        public void {{unionName}}_eq$({{unionNameTitleCase}} value) { set{{unionNameTitleCase}}(value); }
+      {{/structUnions}}%><%={{ }}=%>
+    }
+
+    {{> java-children}}
+  }
+{{/structChildren}}
+{{#enumChildren}}
+  public enum {{enumName}} {
+    {{! TODO annotation for original/titlecase/uppercase generated enumerant names }}
+    {{#enumerants}}{{enumerantNameUpperCase}}{{sep}}{{/enumerants}}
+    {{! public static final capnproto.Schema _SCHEMA = {{enumSchema} }; }}
+    {{! {{> java-children} } }}
+  }
+{{/enumChildren}}
+
+{{=<% %>=}}<%!
+{{^inner?}}
+  public class {{constClassName}}{{^constClassName}}{{fileId}}_Constants{{/constClassName}} {
+    public static final capnproto.Schema _SCHEMA = {{fileSchema}};
+{{/inner}}
+{{#constChildren}}
+  public static final {{#constJavaType}} {{constName}} = {{constValue}};
+{{/constChildren}}
+{{^inner?}}
+  }
+{{/inner}}
+
+{{! TODO generate for C++ and Haskell, so they can be used in the compiler }}
+{{#annotationChildren}}
+  public {{^inner?}}static{{/inner?}} final class {{annotationNameTitleCase}} extends capnproto.Annotation<{{annotationJavaType}}> {
+    public static final capnproto.Schema _SCHEMA = {{annotationSchema}};
+    public {{annotationNameTitleCase}}({{annotationJavaType}} value) { super(value); }
+  }
+{{/annotationChildren}}
+
+{{! TODO default value templates }}
+{{! TODO annotation-targeting annotation that attaches target as Java annotation in generated code }}
+%>
+<%={{ }}=%>

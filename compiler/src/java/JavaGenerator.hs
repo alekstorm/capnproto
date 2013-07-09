@@ -27,27 +27,16 @@
 module JavaGenerator(generateJava) where
 
 import qualified Codec.Binary.UTF8.String as UTF8
-import Data.Binary(encode)
-import Data.Binary.IEEE754(floatToWord, doubleToWord)
-import Data.ByteString(ByteString, readFile)
-import Data.ByteString.Lazy(unpack)
 import qualified Data.ByteString.Lazy.Char8 as LZ
 import qualified Data.ByteString.UTF8 as ByteStringUTF8
-import qualified Data.Digest.MD5 as MD5
 import Data.FileEmbed(embedDir)
-import System.FilePath(combine)
-import Data.Functor((<$>))
 import Data.List(stripPrefix)
 import qualified Data.Map as Map
-import Data.Maybe(catMaybes, fromMaybe, isJust)
-import qualified Data.Set as Set
+import Data.Maybe(fromMaybe, isJust) --catMaybe
 import Data.Word(Word8, Word64)
 import Prelude hiding (readFile)
 import Text.Hastache
 import Text.Hastache.Context
-import Text.Printf(printf)
-import System.Directory (doesFileExist)
-import System.FilePath(takeBaseName)
 
 import Semantics
 import Util
@@ -66,7 +55,7 @@ muNull = MuBool False
 muJust c = MuList [c]
 
 -- TODO deduplicate with CxxGenerator.hs
-packageAnnotationId = 0x55fa396d6a015d11
+packageAnnotationId = 0x8605a81433019637
 
 filePackage desc = fmap testAnnotation $ Map.lookup packageAnnotationId $ fileAnnotations desc
 
@@ -76,26 +65,8 @@ testAnnotation (desc, _) =
     error "Annotation was supposed to be text, but wasn't: " ++ annotationName desc
 
 globalName desc = fromMaybe "" $ globalName' desc where
-    globalName' (DescFile desc) = filePackage desc
-    globalName' desc = Just $ (maybe "" (++ ".") $ globalName' $ descParent desc) ++ descName desc
-
--- Flatten the descriptor tree in pre-order, returning struct, union, and interface descriptors
--- only.  We skip enums because they are always declared directly in their parent scope.
-flattenTypes :: [Desc] -> [Desc]
-flattenTypes [] = []
-flattenTypes (d@(DescStruct s):rest) = d:(flattenTypes children ++ flattenTypes rest) where
-    children = catMaybes $ Map.elems $ structMemberMap s
-flattenTypes (d@(DescUnion u):rest) = d:(flattenTypes children ++ flattenTypes rest) where
-    children = catMaybes $ Map.elems $ unionMemberMap u
-flattenTypes (d@(DescInterface i):rest) = d:(flattenTypes children ++ flattenTypes rest) where
-    children = catMaybes $ Map.elems $ interfaceMemberMap i
-flattenTypes (_:rest) = flattenTypes rest
-
-hashString :: String -> String
-hashString str =
-    concatMap (printf "%02x" . fromEnum) $
-    MD5.hash $
-    UTF8.encode str
+    globalName' (DescFile file) = filePackage file
+    globalName' _ = Just $ (maybe "" (++ ".") $ globalName' $ descParent desc) ++ descName desc
 
 isPrimitive (BuiltinType BuiltinText) = False
 isPrimitive (BuiltinType BuiltinData) = False
@@ -133,12 +104,7 @@ javaTypeString (EnumType desc) = globalName $ DescEnum desc
 javaTypeString (StructType desc) = "capnproto.StructGateway<" ++ foo ++ ".Reader, " ++ foo ++ ".Builder>" where
     foo = globalName $ DescStruct desc
 javaTypeString (ListType desc) = "capnproto.ListGateway<" ++ (javaTypeString desc) ++ ">"
-
-javaTypeString (InlineStructType desc) = globalName $ DescStruct desc
-javaTypeString (InterfaceType desc) = globalName $ DescInterface desc
-javaTypeString (BuiltinType BuiltinObject) = _|_ -- FIXME; luckily, not in test.capnp yet
-javaTypeString (InlineListType t s) = _|_
-javaTypeString (InlineDataType s) = _|_
+javaTypeString _ = undefined
 
 javaGenericTypeString (BuiltinType BuiltinBool) = "Boolean"
 javaGenericTypeString (BuiltinType BuiltinInt8) = "Byte"
@@ -168,9 +134,10 @@ capnTypeString (BuiltinType BuiltinFloat32) = "Float32"
 capnTypeString (BuiltinType BuiltinFloat64) = "Float64"
 capnTypeString (BuiltinType BuiltinText) = "Text"
 capnTypeString (BuiltinType BuiltinData) = "Data"
-capnTypeString (EnumType desc) = "Enum"
-capnTypeString (StructType desc) = "Struct"
-capnTypeString (ListType desc) = "List"
+capnTypeString (EnumType _) = "Enum"
+capnTypeString (StructType _) = "Struct"
+capnTypeString (ListType _) = "List"
+capnTypeString _ = undefined
 
 javaDefaultMask VoidDesc = "scala.Unit.box(null)"
 javaDefaultMask (BoolDesc    b) = if b then "true" else "false"
@@ -186,6 +153,7 @@ javaDefaultMask (UInt64Desc  i) = (toSigned 64 $ fromIntegral i) ++ "L" -- TODO 
 javaDefaultMask (Float32Desc x) = show x  ++ "F"
 javaDefaultMask (Float64Desc x) = show x
 javaDefaultMask (EnumerantValueDesc v) = toSigned 16 $ enumerantNumber v
+javaDefaultMask _ = undefined
 
 toSigned :: Integer -> Integer -> String
 toSigned p i = show $ if (i >= 2 ^ (p - 1)) then i - 2 ^ p else i
@@ -205,15 +173,13 @@ defaultZero (BuiltinType BuiltinUInt64) = UInt64Desc 0
 defaultZero (BuiltinType BuiltinFloat32) = Float32Desc 0
 defaultZero (BuiltinType BuiltinFloat64) = Float64Desc 0
 defaultZero (EnumType desc) = EnumerantValueDesc $ head $ enumerants desc
+defaultZero _ = undefined
 
 defaultValueBytes _ (TextDesc s) = Just (UTF8.encode s ++ [0])
 defaultValueBytes _ (DataDesc d) = Just d
 defaultValueBytes t v@(StructValueDesc _) = Just $ encodeMessage t v
 defaultValueBytes t v@(ListDesc _) = Just $ encodeMessage t v
 defaultValueBytes _ _ = Nothing
-
-elementType (ListType t) = t
-elementType _ = error "Called elementType on non-list."
 
 repeatedlyTake _ [] = []
 repeatedlyTake n l = take n l : repeatedlyTake n (drop n l)
@@ -247,20 +213,19 @@ primitiveFieldContext parent desc = mkStrContext context where
 
 -- TODO merge with javaGenericTypeString
 typeOf (BuiltinType BuiltinText) = capnpPackage ++ "composite.TextGateway"
-typeOf (BuiltinType BuiltinData) = capnpPackage ++ "composite.DataGateway"
+typeOf (BuiltinType BuiltinData) = typeOf $ ListType $ BuiltinType BuiltinUInt8 --capnpPackage ++ "composite.DataGateway"
 typeOf t@(BuiltinType _) = javaGenericTypeString t
 typeOf t@(EnumType _) = javaGenericTypeString t
 typeOf (StructType struct) = capnpPackage ++ "composite.StructGateway<" ++ name ++ ".Reader, " ++ name ++ ".Builder>" where
     name = structName struct
 typeOf (ListType list) = capnpPackage ++ "composite.ListGateway<" ++ typeOf list ++ ">"
-typeOf (InlineStructType _) = error "InlineStructType unimplemented"
-typeOf (InlineListType _ _) = error "InlineListType unimplemented"
-typeOf (InlineDataType _) = error "InlineDataType unimplemented"
+typeOf _ = undefined
 
 gatewayTypeOf (BuiltinType BuiltinData) = "Data"
 gatewayTypeOf (BuiltinType BuiltinText) = "List"
-gatewayTypeOf (ListType list) = "List"
-gatewayTypeOf (StructType struct) = "Struct"
+gatewayTypeOf (ListType _) = "List"
+gatewayTypeOf (StructType _) = "Struct"
+gatewayTypeOf _ = undefined
 
 listContext parent desc = mkStrContext context where
     context "listElemFormatter" = MuVariable $ bar parent desc
@@ -306,12 +271,14 @@ fieldContext parent desc = mkStrContext context where
     context "fieldComposite?" = muMaybe $ if (isComposite typ) then Just $ compositeFieldContext context desc else Nothing
     context "fieldOffset" = MuVariable $ case fieldOffset desc of
         VoidOffset -> 0
-        DataOffset size offset -> offset
+        DataOffset _ offset -> offset
         PointerOffset offset -> offset
+        InlineCompositeOffset _ _ _ _ -> undefined
     context "fieldSize" = MuVariable $ case fieldSize typ of
         SizeVoid -> 0
         SizeData size -> 64 `quot` (dataSizeInBits size)
         SizePointer -> 8
+        SizeInlineComposite _ _ -> undefined
     context s = named parent "fieldName" (fieldName desc) s
     typ = fieldType desc
 
@@ -352,9 +319,10 @@ importContext parent packageName = mkStrContext context where
 fileContexts :: Monad m => FileDesc -> [(String, MuContext m)]
 fileContexts desc = map foo $ filter (isJust . fst) $ map strContext $ fileMembers desc where
     foo (Just name, strCtx) = (name, strCtx)
+    foo _ = undefined
     strContext member = (name, mkStrContext context) where
         (name, structChild, enumChild) = deconstruct
-        isImportUsed dep = Set.member (fileName dep) (fileRuntimeImports desc)
+        --isImportUsed dep = Set.member (fileName dep) (fileRuntimeImports desc)
 
         context "fileId" = MuVariable $ fileId desc
         context "packageName" = case filePackage desc of
@@ -372,7 +340,7 @@ fileContexts desc = map foo $ filter (isJust . fst) $ map strContext $ fileMembe
 
 templateExt = ".mustache"
 templates = Map.fromList $(embedDir "src/java")
-srcTemplateFile = "java" ++ templateExt
+srcTemplateFile = "java-file" ++ templateExt
 srcTemplate = ByteStringUTF8.toString $ Map.findWithDefault (error $ "Source template not found: " ++ srcTemplateFile) srcTemplateFile templates
 
 hastacheConfig :: MuConfig IO
@@ -387,13 +355,13 @@ hastacheConfig = MuConfig
 -- TODO use schemaNodes
 generateJava :: [FileDesc] -> [Word8] -> Map.Map Word64 [Word8] -> IO [(FilePath, LZ.ByteString)]
 generateJava files _ _ = do
-    outputs <- bar $ map foo $ concat $ map fileContexts files
+    outputs <- qux $ map foo $ concat $ map fileContexts files
     return $ map (\(name, output) -> (name ++ ".java", output)) outputs where
-        bar (x:xs) = do
+        qux (x:xs) = do
             y <- x
-            ys <- bar xs
+            ys <- qux xs
             return $ y : ys
-        bar [] = return []
+        qux [] = return []
         foo (name, contents) = do
             output <- hastacheStr hastacheConfig (encodeStr srcTemplate) contents
             return (name, output)

@@ -1,6 +1,5 @@
 // Generated code, DO NOT EDIT
 
-package capnproto.test.generated;
 
 
 

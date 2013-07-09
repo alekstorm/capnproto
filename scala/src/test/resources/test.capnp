@@ -42,22 +42,22 @@ enum TestEnum {
   garply @7;
 }
 
-struct TestSuite {
-  tests @0 :List(Test);
-}
+#struct TestSuite {
+#  tests @0 :List(Test);
+#}
 
-struct Test {
-  name @0 :Text;
-  description @1 :Text;
-  enum Direction {
-    json2Capnp @0;
-    capnp2Json @1;
-  }
-  direction @2 :Direction;
-  id @3 :UInt64;
-  json @4 :Object;
-  capnp @5 :Data;
-}
+#struct Test {
+#  name @0 :Text;
+#  description @1 :Text;
+#  enum Direction {
+#    json2Capnp @0;
+#    capnp2Json @1;
+#  }
+#  direction @2 :Direction;
+#  id @3 :UInt64;
+#  json @4 :Object;
+#  capnp @5 :Data;
+#}
 
 struct TestAllTypes {
   #voidField      @0  : Void;

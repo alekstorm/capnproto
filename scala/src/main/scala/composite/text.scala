@@ -35,11 +35,15 @@ import scala.collection.generic.{Growable, Sizing}
 import spire.math.UInt
 
 import bitsy._; import Quantity.implicits._
+import internal._
 
 // TODO haven't touched this in a while, still quite a mess
 
-class TextGateway(context: BaseContext[ListPointerTarget], default: Option[Array[Byte]]) extends CollectionGateway[Text, ModifiableText](context, default) {
+class TextGateway(override val context: BaseContext[ListPointerTarget], default: Option[Array[Byte]]) extends CollectionGateway[Text] {
   override def reader: Text = ???
+}
+
+class ModifiableTextGateway(context: BaseContext[ListPointerTarget], default: Option[Array[Byte]]) extends TextGateway(context, default) with ModifiableCollectionGateway[Text, ModifiableText] {
   override def builder: Option[ModifiableText] = ???
   override def init(size: UInt): ModifiableText = ???
   override def resize(newSize: UInt): ModifiableText = ???
@@ -119,7 +123,7 @@ object Text {
 // TODO might need new ModifiableTextPortion class (that this implements, and adds an init() method to) to get IterableView and such to work, since they need a Builder for the type
 // TODO is tying inner classes to their containing instances necessary when they can be parametrized on singleton types?
 // if pointer itself is moved (from movement of parent object), all child builders are also invalidated
-class ModifiableText(context: BaseContext[ListPointerTarget]) extends Text(context) with Modifiable[Text] with Appendable with Growable[Char] {
+class ModifiableText(context: BaseContext[ListPointerTarget]) extends Text(context) with Appendable with Growable[Char] {
   protected var pos = 0
   // TODO check that appending past limit throws error
   // TODO add all append()/remove() overloads to iterator as well
