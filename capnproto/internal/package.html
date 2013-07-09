@@ -1,0 +1,550 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>internal - Cap'n Proto Scala 0.1-SNAPSHOT API - capnproto.internal</title>
+          <meta name="description" content="internal - Cap n Proto Scala 0.1 - SNAPSHOT API - capnproto.internal" />
+          <meta name="keywords" content="internal Cap n Proto Scala 0.1 SNAPSHOT API capnproto.internal" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../index.html';
+            var hash = 'capnproto.internal.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../lib/package_big.png" />
+        <p id="owner"><a href="../package.html" class="extype" name="capnproto">capnproto</a></p>
+        <h1>internal</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">internal</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="capnproto.internal.BaseContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="BaseContext[I&lt;:capnproto.internal.NearPointerTarget]extendsAnyRef"></a>
+      <a id="BaseContext[I&lt;:NearPointerTarget]:BaseContext[I]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="BaseContext.html"><span class="name">BaseContext</span></a><span class="tparams">[<span name="I">I &lt;: <a href="NearPointerTarget.html" class="extype" name="capnproto.internal.NearPointerTarget">NearPointerTarget</a></span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.CompositeElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CompositeElemSizeextendsElemSizewithProductwithSerializable"></a>
+      <a id="CompositeElemSize:CompositeElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CompositeElemSize.html"><span class="name">CompositeElemSize</span></a><span class="params">(<span name="dataSize">dataSize: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>, <span name="pointerSize">pointerSize: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>)</span><span class="result"> extends <a href="ElemSize.html" class="extype" name="capnproto.internal.ElemSize">ElemSize</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.CompositeListPointerTarget" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CompositeListPointerTargetextendsListPointerTargetwithProductwithSerializable"></a>
+      <a id="CompositeListPointerTarget:CompositeListPointerTarget"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CompositeListPointerTarget.html"><span class="name">CompositeListPointerTarget</span></a><span class="params">(<span name="listSize">listSize: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>)</span><span class="result"> extends <a href="ListPointerTarget.html" class="extype" name="capnproto.internal.ListPointerTarget">ListPointerTarget</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.CompositeListTag" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CompositeListTagextendsProductwithSerializable"></a>
+      <a id="CompositeListTag:CompositeListTag"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CompositeListTag.html"><span class="name">CompositeListTag</span></a><span class="params">(<span name="elemCount">elemCount: <span class="extype" name="spire.math.UInt">UInt</span></span>, <span name="dataSize">dataSize: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>, <span name="pointerSize">pointerSize: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.Context" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Context[I&lt;:capnproto.internal.NearPointerTarget]extendsBaseContext[I]withProductwithSerializable"></a>
+      <a id="Context[I&lt;:NearPointerTarget]:Context[I]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Context.html"><span class="name">Context</span></a><span class="tparams">[<span name="I">I &lt;: <a href="NearPointerTarget.html" class="extype" name="capnproto.internal.NearPointerTarget">NearPointerTarget</a></span>]</span><span class="params">(<span name="manager">manager: <a href="../Manager.html" class="extype" name="capnproto.Manager">Manager</a></span>, <span name="segmentId">segmentId: <span class="extype" name="spire.math.UInt">UInt</span></span>, <span name="offset">offset: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>)</span><span class="result"> extends <a href="BaseContext.html" class="extype" name="capnproto.internal.BaseContext">BaseContext</a>[<span class="extype" name="capnproto.internal.Context.I">I</span>] with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.ElemSize" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ElemSizeextendsAnyRef"></a>
+      <a id="ElemSize:ElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ElemSize.html"><span class="name">ElemSize</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.FarPointer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FarPointerextendsPointerwithProductwithSerializable"></a>
+      <a id="FarPointer:FarPointer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="FarPointer.html"><span class="name">FarPointer</span></a><span class="params">(<span name="hasTag">hasTag: <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="offset">offset: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>, <span name="segmentId">segmentId: <span class="extype" name="spire.math.UInt">UInt</span></span>)</span><span class="result"> extends <a href="Pointer.html" class="extype" name="capnproto.internal.Pointer">Pointer</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.ListPointerTarget" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ListPointerTargetextendsNearPointerTarget"></a>
+      <a id="ListPointerTarget:ListPointerTarget"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ListPointerTarget.html"><span class="name">ListPointerTarget</span></a><span class="result"> extends <a href="NearPointerTarget.html" class="extype" name="capnproto.internal.NearPointerTarget">NearPointerTarget</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.NearContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NearContext[I&lt;:capnproto.internal.NearPointerTarget]extendsBaseContext[I]withProductwithSerializable"></a>
+      <a id="NearContext[I&lt;:NearPointerTarget]:NearContext[I]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NearContext.html"><span class="name">NearContext</span></a><span class="tparams">[<span name="I">I &lt;: <a href="NearPointerTarget.html" class="extype" name="capnproto.internal.NearPointerTarget">NearPointerTarget</a></span>]</span><span class="params">(<span name="manager">manager: <a href="../Manager.html" class="extype" name="capnproto.Manager">Manager</a></span>, <span name="segmentId">segmentId: <span class="extype" name="spire.math.UInt">UInt</span></span>, <span name="offset">offset: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>)</span><span class="result"> extends <a href="BaseContext.html" class="extype" name="capnproto.internal.BaseContext">BaseContext</a>[<span class="extype" name="capnproto.internal.NearContext.I">I</span>] with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.NearPointer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NearPointer[P&lt;:capnproto.internal.NearPointerTarget]extendsPointerwithProductwithSerializable"></a>
+      <a id="NearPointer[P&lt;:NearPointerTarget]:NearPointer[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NearPointer.html"><span class="name">NearPointer</span></a><span class="tparams">[<span name="P">P &lt;: <a href="NearPointerTarget.html" class="extype" name="capnproto.internal.NearPointerTarget">NearPointerTarget</a></span>]</span><span class="params">(<span name="offset">offset: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>, <span name="target">target: <span class="extype" name="capnproto.internal.NearPointer.P">P</span></span>)</span><span class="result"> extends <a href="Pointer.html" class="extype" name="capnproto.internal.Pointer">Pointer</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.NearPointerTarget" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="NearPointerTargetextendsAnyRef"></a>
+      <a id="NearPointerTarget:NearPointerTarget"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="NearPointerTarget.html"><span class="name">NearPointerTarget</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.Pointer" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="PointerextendsAnyRef"></a>
+      <a id="Pointer:Pointer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Pointer.html"><span class="name">Pointer</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.PointerType" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="PointerTypeextendsAnyRef"></a>
+      <a id="PointerType:PointerType"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="PointerType.html"><span class="name">PointerType</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.PrimitiveElemSize" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="PrimitiveElemSizeextendsElemSize"></a>
+      <a id="PrimitiveElemSize:PrimitiveElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="PrimitiveElemSize.html"><span class="name">PrimitiveElemSize</span></a><span class="result"> extends <a href="ElemSize.html" class="extype" name="capnproto.internal.ElemSize">ElemSize</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.PrimitiveListPointerTarget" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PrimitiveListPointerTargetextendsListPointerTargetwithProductwithSerializable"></a>
+      <a id="PrimitiveListPointerTarget:PrimitiveListPointerTarget"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="PrimitiveListPointerTarget.html"><span class="name">PrimitiveListPointerTarget</span></a><span class="params">(<span name="elemSize">elemSize: <a href="PrimitiveElemSize.html" class="extype" name="capnproto.internal.PrimitiveElemSize">PrimitiveElemSize</a></span>, <span name="elemCount">elemCount: <span class="extype" name="spire.math.UInt">UInt</span></span>)</span><span class="result"> extends <a href="ListPointerTarget.html" class="extype" name="capnproto.internal.ListPointerTarget">ListPointerTarget</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.RichListContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RichListContextextendsAnyValwithRichNearContext"></a>
+      <a id="RichListContext:RichListContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="RichListContext.html"><span class="name">RichListContext</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyVal" class="extype" target="_top">AnyVal</a> with <a href="RichNearContext.html" class="extype" name="capnproto.internal.RichNearContext">RichNearContext</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.RichNearContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="RichNearContextextendsAny"></a>
+      <a id="RichNearContext:RichNearContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RichNearContext.html"><span class="name">RichNearContext</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Any" class="extype" target="_top">Any</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.RichStructContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RichStructContextextendsAnyValwithRichNearContext"></a>
+      <a id="RichStructContext:RichStructContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="RichStructContext.html"><span class="name">RichStructContext</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyVal" class="extype" target="_top">AnyVal</a> with <a href="RichNearContext.html" class="extype" name="capnproto.internal.RichNearContext">RichNearContext</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.Segment" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SegmentextendsAnyVal"></a>
+      <a id="Segment:Segment"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Segment.html"><span class="name">Segment</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyVal" class="extype" target="_top">AnyVal</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.StructPointerTarget" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="StructPointerTargetextendsNearPointerTargetwithProductwithSerializable"></a>
+      <a id="StructPointerTarget:StructPointerTarget"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="StructPointerTarget.html"><span class="name">StructPointerTarget</span></a><span class="params">(<span name="dataSize">dataSize: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>, <span name="pointerSize">pointerSize: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>)</span><span class="result"> extends <a href="NearPointerTarget.html" class="extype" name="capnproto.internal.NearPointerTarget">NearPointerTarget</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.TaggedLandingPad" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TaggedLandingPad[P&lt;:capnproto.internal.NearPointerTarget]extendsProductwithSerializable"></a>
+      <a id="TaggedLandingPad[P&lt;:NearPointerTarget]:TaggedLandingPad[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TaggedLandingPad.html"><span class="name">TaggedLandingPad</span></a><span class="tparams">[<span name="P">P &lt;: <a href="NearPointerTarget.html" class="extype" name="capnproto.internal.NearPointerTarget">NearPointerTarget</a></span>]</span><span class="params">(<span name="offset">offset: <a href="../bitsy/package$$Words.html" class="extype" name="capnproto.bitsy.Words">Words</a></span>, <span name="segmentId">segmentId: <span class="extype" name="spire.math.UInt">UInt</span></span>, <span name="pointer">pointer: <a href="NearPointer.html" class="extype" name="capnproto.internal.NearPointer">NearPointer</a>[<span class="extype" name="capnproto.internal.TaggedLandingPad.P">P</span>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="capnproto.internal.BitElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BitElemSize"></a>
+      <a id="BitElemSize:BitElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="BitElemSize$.html"><span class="name">BitElemSize</span></a><span class="result"> extends <a href="PrimitiveElemSize.html" class="extype" name="capnproto.internal.PrimitiveElemSize">PrimitiveElemSize</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.ByteElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ByteElemSize"></a>
+      <a id="ByteElemSize:ByteElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ByteElemSize$.html"><span class="name">ByteElemSize</span></a><span class="result"> extends <a href="PrimitiveElemSize.html" class="extype" name="capnproto.internal.PrimitiveElemSize">PrimitiveElemSize</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.CompositeElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CompositeElemSize"></a>
+      <a id="CompositeElemSize:CompositeElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CompositeElemSize$.html"><span class="name">CompositeElemSize</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.FarPointer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FarPointer"></a>
+      <a id="FarPointer:FarPointer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="FarPointer$.html"><span class="name">FarPointer</span></a><span class="result"> extends <a href="PointerType.html" class="extype" name="capnproto.internal.PointerType">PointerType</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.ListPointerTarget" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ListPointerTarget"></a>
+      <a id="ListPointerTarget:ListPointerTarget"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ListPointerTarget$.html"><span class="name">ListPointerTarget</span></a><span class="result"> extends <a href="PointerType.html" class="extype" name="capnproto.internal.PointerType">PointerType</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.NearContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NearContext"></a>
+      <a id="NearContext:NearContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NearContext$.html"><span class="name">NearContext</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.PointerElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PointerElemSize"></a>
+      <a id="PointerElemSize:PointerElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PointerElemSize$.html"><span class="name">PointerElemSize</span></a><span class="result"> extends <a href="PrimitiveElemSize.html" class="extype" name="capnproto.internal.PrimitiveElemSize">PrimitiveElemSize</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.PrimitiveElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PrimitiveElemSize"></a>
+      <a id="PrimitiveElemSize:PrimitiveElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PrimitiveElemSize$.html"><span class="name">PrimitiveElemSize</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.QuadElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="QuadElemSize"></a>
+      <a id="QuadElemSize:QuadElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="QuadElemSize$.html"><span class="name">QuadElemSize</span></a><span class="result"> extends <a href="PrimitiveElemSize.html" class="extype" name="capnproto.internal.PrimitiveElemSize">PrimitiveElemSize</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.Segment" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Segment"></a>
+      <a id="Segment:Segment"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Segment$.html"><span class="name">Segment</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.ShortElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShortElemSize"></a>
+      <a id="ShortElemSize:ShortElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ShortElemSize$.html"><span class="name">ShortElemSize</span></a><span class="result"> extends <a href="PrimitiveElemSize.html" class="extype" name="capnproto.internal.PrimitiveElemSize">PrimitiveElemSize</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.StructPointerTarget" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="StructPointerTarget"></a>
+      <a id="StructPointerTarget:StructPointerTarget"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="StructPointerTarget$.html"><span class="name">StructPointerTarget</span></a><span class="result"> extends <a href="PointerType.html" class="extype" name="capnproto.internal.PointerType">PointerType</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.WordElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WordElemSize"></a>
+      <a id="WordElemSize:WordElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="WordElemSize$.html"><span class="name">WordElemSize</span></a><span class="result"> extends <a href="PrimitiveElemSize.html" class="extype" name="capnproto.internal.PrimitiveElemSize">PrimitiveElemSize</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.internal.ZeroElemSize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ZeroElemSize"></a>
+      <a id="ZeroElemSize:ZeroElemSize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ZeroElemSize$.html"><span class="name">ZeroElemSize</span></a><span class="result"> extends <a href="PrimitiveElemSize.html" class="extype" name="capnproto.internal.PrimitiveElemSize">PrimitiveElemSize</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../lib/template.js"></script>
+    </body>
+      </html>

@@ -1,0 +1,407 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>composite - Cap'n Proto Scala 0.1-SNAPSHOT API - capnproto.composite</title>
+          <meta name="description" content="composite - Cap n Proto Scala 0.1 - SNAPSHOT API - capnproto.composite" />
+          <meta name="keywords" content="composite Cap n Proto Scala 0.1 SNAPSHOT API capnproto.composite" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../index.html';
+            var hash = 'capnproto.composite.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../lib/package_big.png" />
+        <p id="owner"><a href="../package.html" class="extype" name="capnproto">capnproto</a></p>
+        <h1>composite</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">composite</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="capnproto.composite.Annotation" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Annotation[T]extendsProductwithSerializable"></a>
+      <a id="Annotation[T]:Annotation[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Annotation.html"><span class="name">Annotation</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="capnproto.composite.Annotation.T">T</span></span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.Collection" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Collection[R&lt;:capnproto.composite.Collection[R,MR],MR&lt;:R]extendsComposite[R,MR]"></a>
+      <a id="Collection[R&lt;:Collection[R,MR],MR&lt;:R]:Collection[R,MR]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Collection.html"><span class="name">Collection</span></a><span class="tparams">[<span name="R">R &lt;: <a href="Collection.html" class="extype" name="capnproto.composite.Collection">Collection</a>[<span class="extype" name="capnproto.composite.Collection.R">R</span>, <span class="extype" name="capnproto.composite.Collection.MR">MR</span>]</span>, <span name="MR">MR &lt;: <span class="extype" name="capnproto.composite.Collection.R">R</span></span>]</span><span class="result"> extends <a href="Composite.html" class="extype" name="capnproto.composite.Composite">Composite</a>[<span class="extype" name="capnproto.composite.Collection.R">R</span>, <span class="extype" name="capnproto.composite.Collection.MR">MR</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.CollectionGateway" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CollectionGateway[C&lt;:capnproto.composite.Collection[C,_]]extendsGateway[C,capnproto.internal.ListPointerTarget]"></a>
+      <a id="CollectionGateway[C&lt;:Collection[C,_]]:CollectionGateway[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CollectionGateway.html"><span class="name">CollectionGateway</span></a><span class="tparams">[<span name="C">C &lt;: <a href="Collection.html" class="extype" name="capnproto.composite.Collection">Collection</a>[<span class="extype" name="capnproto.composite.CollectionGateway.C">C</span>, _]</span>]</span><span class="result"> extends <a href="Gateway.html" class="extype" name="capnproto.composite.Gateway">Gateway</a>[<span class="extype" name="capnproto.composite.CollectionGateway.C">C</span>, <a href="../internal/ListPointerTarget.html" class="extype" name="capnproto.internal.ListPointerTarget">ListPointerTarget</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.Composite" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Composite[C&lt;:capnproto.composite.Composite[C,MC],MC&lt;:C]extendsAnyRef"></a>
+      <a id="Composite[C&lt;:Composite[C,MC],MC&lt;:C]:Composite[C,MC]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Composite.html"><span class="name">Composite</span></a><span class="tparams">[<span name="C">C &lt;: <a href="Composite.html" class="extype" name="capnproto.composite.Composite">Composite</a>[<span class="extype" name="capnproto.composite.Composite.C">C</span>, <span class="extype" name="capnproto.composite.Composite.MC">MC</span>]</span>, <span name="MC">MC &lt;: <span class="extype" name="capnproto.composite.Composite.C">C</span></span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.Formatter" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Formatter[T]extendsAnyRef"></a>
+      <a id="Formatter[T]:Formatter[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Formatter.html"><span class="name">Formatter</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.Gateway" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Gateway[C&lt;:capnproto.composite.Composite[C,_],P&lt;:capnproto.internal.NearPointerTarget]extendsAnyRef"></a>
+      <a id="Gateway[C&lt;:Composite[C,_],P&lt;:NearPointerTarget]:Gateway[C,P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Gateway.html"><span class="name">Gateway</span></a><span class="tparams">[<span name="C">C &lt;: <a href="Composite.html" class="extype" name="capnproto.composite.Composite">Composite</a>[<span class="extype" name="capnproto.composite.Gateway.C">C</span>, _]</span>, <span name="P">P &lt;: <a href="../internal/NearPointerTarget.html" class="extype" name="capnproto.internal.NearPointerTarget">NearPointerTarget</a></span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.List" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="List[T]extendsAbstractList[T]withComparable[capnproto.composite.List[T]]withCollection[capnproto.composite.List[T],capnproto.composite.ModifiableList[T]]"></a>
+      <a id="List[T]:List[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="List.html"><span class="name">List</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="java.util.AbstractList">AbstractList</span>[<span class="extype" name="capnproto.composite.List.T">T</span>] with <span class="extype" name="java.lang.Comparable">Comparable</span>[<a href="List.html" class="extype" name="capnproto.composite.List">List</a>[<span class="extype" name="capnproto.composite.List.T">T</span>]] with <a href="Collection.html" class="extype" name="capnproto.composite.Collection">Collection</a>[<a href="List.html" class="extype" name="capnproto.composite.List">List</a>[<span class="extype" name="capnproto.composite.List.T">T</span>], <a href="ModifiableList.html" class="extype" name="capnproto.composite.ModifiableList">ModifiableList</a>[<span class="extype" name="capnproto.composite.List.T">T</span>]]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.ListGateway" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ListGateway[T]extendsCollectionGateway[capnproto.composite.List[T]]"></a>
+      <a id="ListGateway[T]:ListGateway[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ListGateway.html"><span class="name">ListGateway</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="CollectionGateway.html" class="extype" name="capnproto.composite.CollectionGateway">CollectionGateway</a>[<a href="List.html" class="extype" name="capnproto.composite.List">List</a>[<span class="extype" name="capnproto.composite.ListGateway.T">T</span>]]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.ModifiableCollectionGateway" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ModifiableCollectionGateway[C&lt;:capnproto.composite.Collection[C,MC],MC&lt;:C]extendsModifiableGateway[C,MC,capnproto.internal.ListPointerTarget]"></a>
+      <a id="ModifiableCollectionGateway[C&lt;:Collection[C,MC],MC&lt;:C]:ModifiableCollectionGateway[C,MC]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ModifiableCollectionGateway.html"><span class="name">ModifiableCollectionGateway</span></a><span class="tparams">[<span name="C">C &lt;: <a href="Collection.html" class="extype" name="capnproto.composite.Collection">Collection</a>[<span class="extype" name="capnproto.composite.ModifiableCollectionGateway.C">C</span>, <span class="extype" name="capnproto.composite.ModifiableCollectionGateway.MC">MC</span>]</span>, <span name="MC">MC &lt;: <span class="extype" name="capnproto.composite.ModifiableCollectionGateway.C">C</span></span>]</span><span class="result"> extends <a href="ModifiableGateway.html" class="extype" name="capnproto.composite.ModifiableGateway">ModifiableGateway</a>[<span class="extype" name="capnproto.composite.ModifiableCollectionGateway.C">C</span>, <span class="extype" name="capnproto.composite.ModifiableCollectionGateway.MC">MC</span>, <a href="../internal/ListPointerTarget.html" class="extype" name="capnproto.internal.ListPointerTarget">ListPointerTarget</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.ModifiableGateway" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ModifiableGateway[C&lt;:capnproto.composite.Composite[C,MC],MC&lt;:C,P&lt;:capnproto.internal.NearPointerTarget]extendsGateway[C,P]"></a>
+      <a id="ModifiableGateway[C&lt;:Composite[C,MC],MC&lt;:C,P&lt;:NearPointerTarget]:ModifiableGateway[C,MC,P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ModifiableGateway.html"><span class="name">ModifiableGateway</span></a><span class="tparams">[<span name="C">C &lt;: <a href="Composite.html" class="extype" name="capnproto.composite.Composite">Composite</a>[<span class="extype" name="capnproto.composite.ModifiableGateway.C">C</span>, <span class="extype" name="capnproto.composite.ModifiableGateway.MC">MC</span>]</span>, <span name="MC">MC &lt;: <span class="extype" name="capnproto.composite.ModifiableGateway.C">C</span></span>, <span name="P">P &lt;: <a href="../internal/NearPointerTarget.html" class="extype" name="capnproto.internal.NearPointerTarget">NearPointerTarget</a></span>]</span><span class="result"> extends <a href="Gateway.html" class="extype" name="capnproto.composite.Gateway">Gateway</a>[<span class="extype" name="capnproto.composite.ModifiableGateway.C">C</span>, <span class="extype" name="capnproto.composite.ModifiableGateway.P">P</span>]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">The representation of a composite field or list element.</p>
+    </li><li name="capnproto.composite.ModifiableList" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ModifiableList[T]extendsList[T]withGrowable[T]"></a>
+      <a id="ModifiableList[T]:ModifiableList[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ModifiableList.html"><span class="name">ModifiableList</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="List.html" class="extype" name="capnproto.composite.List">List</a>[<span class="extype" name="capnproto.composite.ModifiableList.T">T</span>] with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.collection.generic.Growable" class="extype" target="_top">Growable</a>[<span class="extype" name="capnproto.composite.ModifiableList.T">T</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.ModifiableListGateway" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ModifiableListGateway[T]extendsListGateway[T]withModifiableCollectionGateway[capnproto.composite.List[T],capnproto.composite.ModifiableList[T]]"></a>
+      <a id="ModifiableListGateway[T]:ModifiableListGateway[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ModifiableListGateway.html"><span class="name">ModifiableListGateway</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="ListGateway.html" class="extype" name="capnproto.composite.ListGateway">ListGateway</a>[<span class="extype" name="capnproto.composite.ModifiableListGateway.T">T</span>] with <a href="ModifiableCollectionGateway.html" class="extype" name="capnproto.composite.ModifiableCollectionGateway">ModifiableCollectionGateway</a>[<a href="List.html" class="extype" name="capnproto.composite.List">List</a>[<span class="extype" name="capnproto.composite.ModifiableListGateway.T">T</span>], <a href="ModifiableList.html" class="extype" name="capnproto.composite.ModifiableList">ModifiableList</a>[<span class="extype" name="capnproto.composite.ModifiableListGateway.T">T</span>]]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.ModifiableStructGateway" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ModifiableStructGateway[S&lt;:capnproto.composite.Struct[S,MS],MS&lt;:S]extendsStructGateway[S]withModifiableGateway[S,MS,capnproto.internal.StructPointerTarget]"></a>
+      <a id="ModifiableStructGateway[S&lt;:Struct[S,MS],MS&lt;:S]:ModifiableStructGateway[S,MS]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ModifiableStructGateway.html"><span class="name">ModifiableStructGateway</span></a><span class="tparams">[<span name="S">S &lt;: <a href="Struct.html" class="extype" name="capnproto.composite.Struct">Struct</a>[<span class="extype" name="capnproto.composite.ModifiableStructGateway.S">S</span>, <span class="extype" name="capnproto.composite.ModifiableStructGateway.MS">MS</span>]</span>, <span name="MS">MS &lt;: <span class="extype" name="capnproto.composite.ModifiableStructGateway.S">S</span></span>]</span><span class="result"> extends <a href="StructGateway.html" class="extype" name="capnproto.composite.StructGateway">StructGateway</a>[<span class="extype" name="capnproto.composite.ModifiableStructGateway.S">S</span>] with <a href="ModifiableGateway.html" class="extype" name="capnproto.composite.ModifiableGateway">ModifiableGateway</a>[<span class="extype" name="capnproto.composite.ModifiableStructGateway.S">S</span>, <span class="extype" name="capnproto.composite.ModifiableStructGateway.MS">MS</span>, <a href="../internal/StructPointerTarget.html" class="extype" name="capnproto.internal.StructPointerTarget">StructPointerTarget</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.ModifiableText" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ModifiableTextextendsTextwithAppendablewithGrowable[Char]"></a>
+      <a id="ModifiableText:ModifiableText"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ModifiableText.html"><span class="name">ModifiableText</span></a><span class="result"> extends <a href="Text.html" class="extype" name="capnproto.composite.Text">Text</a> with <span class="extype" name="java.lang.Appendable">Appendable</span> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.collection.generic.Growable" class="extype" target="_top">Growable</a>[<a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Char" class="extype" target="_top">Char</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.ModifiableTextGateway" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ModifiableTextGatewayextendsTextGatewaywithModifiableCollectionGateway[capnproto.composite.Text,capnproto.composite.ModifiableText]"></a>
+      <a id="ModifiableTextGateway:ModifiableTextGateway"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ModifiableTextGateway.html"><span class="name">ModifiableTextGateway</span></a><span class="result"> extends <a href="TextGateway.html" class="extype" name="capnproto.composite.TextGateway">TextGateway</a> with <a href="ModifiableCollectionGateway.html" class="extype" name="capnproto.composite.ModifiableCollectionGateway">ModifiableCollectionGateway</a>[<a href="Text.html" class="extype" name="capnproto.composite.Text">Text</a>, <a href="ModifiableText.html" class="extype" name="capnproto.composite.ModifiableText">ModifiableText</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.Struct" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Struct[S&lt;:capnproto.composite.Struct[S,MS],MS&lt;:S]extendsComposite[S,MS]"></a>
+      <a id="Struct[S&lt;:Struct[S,MS],MS&lt;:S]:Struct[S,MS]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Struct.html"><span class="name">Struct</span></a><span class="tparams">[<span name="S">S &lt;: <a href="Struct.html" class="extype" name="capnproto.composite.Struct">Struct</a>[<span class="extype" name="capnproto.composite.Struct.S">S</span>, <span class="extype" name="capnproto.composite.Struct.MS">MS</span>]</span>, <span name="MS">MS &lt;: <span class="extype" name="capnproto.composite.Struct.S">S</span></span>]</span><span class="result"> extends <a href="Composite.html" class="extype" name="capnproto.composite.Composite">Composite</a>[<span class="extype" name="capnproto.composite.Struct.S">S</span>, <span class="extype" name="capnproto.composite.Struct.MS">MS</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.StructFactory" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="StructFactory[S&lt;:capnproto.composite.Struct[S,MS],MS&lt;:S]extendsAnyRef"></a>
+      <a id="StructFactory[S&lt;:Struct[S,MS],MS&lt;:S]:StructFactory[S,MS]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="StructFactory.html"><span class="name">StructFactory</span></a><span class="tparams">[<span name="S">S &lt;: <a href="Struct.html" class="extype" name="capnproto.composite.Struct">Struct</a>[<span class="extype" name="capnproto.composite.StructFactory.S">S</span>, <span class="extype" name="capnproto.composite.StructFactory.MS">MS</span>]</span>, <span name="MS">MS &lt;: <span class="extype" name="capnproto.composite.StructFactory.S">S</span></span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Factory class inherited by generated Java code.</p>
+    </li><li name="capnproto.composite.StructGateway" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="StructGateway[S&lt;:capnproto.composite.Struct[S,_]]extendsGateway[S,capnproto.internal.StructPointerTarget]"></a>
+      <a id="StructGateway[S&lt;:Struct[S,_]]:StructGateway[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="StructGateway.html"><span class="name">StructGateway</span></a><span class="tparams">[<span name="S">S &lt;: <a href="Struct.html" class="extype" name="capnproto.composite.Struct">Struct</a>[<span class="extype" name="capnproto.composite.StructGateway.S">S</span>, _]</span>]</span><span class="result"> extends <a href="Gateway.html" class="extype" name="capnproto.composite.Gateway">Gateway</a>[<span class="extype" name="capnproto.composite.StructGateway.S">S</span>, <a href="../internal/StructPointerTarget.html" class="extype" name="capnproto.internal.StructPointerTarget">StructPointerTarget</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.Text" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TextextendsCollection[capnproto.composite.Text,capnproto.composite.ModifiableText]withReadablewithIterable[Char]withComparable[capnproto.composite.Text]withSizing"></a>
+      <a id="Text:Text"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Text.html"><span class="name">Text</span></a><span class="result"> extends <a href="Collection.html" class="extype" name="capnproto.composite.Collection">Collection</a>[<a href="Text.html" class="extype" name="capnproto.composite.Text">Text</a>, <a href="ModifiableText.html" class="extype" name="capnproto.composite.ModifiableText">ModifiableText</a>] with <span class="extype" name="java.lang.Readable">Readable</span> with <span class="extype" name="java.lang.Iterable">Iterable</span>[<a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Char" class="extype" target="_top">Char</a>] with <span class="extype" name="java.lang.Comparable">Comparable</span>[<a href="Text.html" class="extype" name="capnproto.composite.Text">Text</a>] with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.collection.generic.Sizing" class="extype" target="_top">Sizing</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.TextGateway" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TextGatewayextendsCollectionGateway[capnproto.composite.Text]"></a>
+      <a id="TextGateway:TextGateway"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TextGateway.html"><span class="name">TextGateway</span></a><span class="result"> extends <a href="CollectionGateway.html" class="extype" name="capnproto.composite.CollectionGateway">CollectionGateway</a>[<a href="Text.html" class="extype" name="capnproto.composite.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.Union" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Union[T,F&lt;:Enum[F]]extendsProductwithSerializable"></a>
+      <a id="Union[T,F&lt;:Enum[F]]:Union[T,F]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Union.html"><span class="name">Union</span></a><span class="tparams">[<span name="T">T</span>, <span name="F">F &lt;: <span class="extype" name="java.lang.Enum">Enum</span>[<span class="extype" name="capnproto.composite.Union.F">F</span>]</span>]</span><span class="params">(<span name="which">which: <span class="extype" name="capnproto.composite.Union.F">F</span></span>, <span name="value">value: <span class="extype" name="capnproto.composite.Union.T">T</span></span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="capnproto.composite.Formatter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Formatter"></a>
+      <a id="Formatter:Formatter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Formatter$.html"><span class="name">Formatter</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.ModifiableText" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ModifiableText"></a>
+      <a id="ModifiableText:ModifiableText"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ModifiableText$.html"><span class="name">ModifiableText</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="capnproto.composite.Text" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Text"></a>
+      <a id="Text:Text"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Text$.html"><span class="name">Text</span></a>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../lib/template.js"></script>
+    </body>
+      </html>
